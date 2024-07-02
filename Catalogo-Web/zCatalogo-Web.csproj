@@ -73,6 +73,7 @@
     <Content Include="Images\BraviaFondo.jpg" />
     <Content Include="Images\Fondo1.jpg" />
     <Content Include="Images\Logo1.jpg" />
+    <Content Include="Images\SinCuenta.jpg" />
     <Content Include="pr2.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
