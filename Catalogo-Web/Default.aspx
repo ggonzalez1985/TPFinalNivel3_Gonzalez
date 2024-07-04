@@ -10,7 +10,7 @@
             <div class="col text-start" style="margin-top: 500px;">
                 <ul class="nav nav-underline flex-grow-1">
                     <li class="nav-item" style="margin-left: 40px;">
-                        <a class="nav-link" href="#">Ver Catalogo</a>
+                        <a class="nav-link" href="Catalogo.aspx">Ver Catalogo</a>
                     </li>
                 </ul>
             </div>
