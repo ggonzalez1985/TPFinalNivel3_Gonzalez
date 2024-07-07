@@ -8,77 +8,107 @@
     <div class="container-fluid" style="background-color: #000;">
 
         <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-8">
+            <div class="col-6 ">
                 <form class="card card-sm" style="background-color: #000; color: #fff; border-color: #fff;">
                     <div class="card-body row no-gutters align-items-center">
                         <div class="col-auto">
                             <i class="fas fa-search h4 text-body"></i>
                         </div>
                         <div class="col">
-                            <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..." style="color: #fff; background-color: #000;">
+                            <asp:TextBox runat="server" ID="txtFiltro" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..." Style="color: #fff; background-color: #000;" />
                         </div>
 
+                        <div class="col-auto">
+                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click" class="btn btn-lg btn-outline-light" Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />   
+                        </div>
                     </div>
                     <br />
                 </form>
             </div>
+            <div class="col-2 ">
+                <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" style="color: #FFFFFF; top: 15px;" runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
+            </div>
         </div>
 
+
+        <%if (chkAvanzado.Checked)
+            { %>
         <div class="row">
 
             <div class="col-3">
                 <div class="mb-3">
                     <asp:Label Text="Categoria:" Style="color: #fff;" runat="server" />
-                    <asp:DropDownList ID="DdlCategorias" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DdlCategorias_SelectedIndexChanged">
+                    <asp:DropDownList ID="DdlCategorias" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server" OnSelectedIndexChanged="DdlCategorias_SelectedIndexChanged">
                     </asp:DropDownList>
                 </div>
             </div>
             <div class="col-3">
                 <div class="mb-3">
-                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                        <ContentTemplate>
-                            <asp:Label Text="Marca:" Style="color: #fff;" runat="server" />
-                            <asp:DropDownList ID="DdlMarcas" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server"></asp:DropDownList>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
+                    <asp:Label Text="Marca:" Style="color: #fff;" runat="server" />
+                    <asp:DropDownList ID="DdlMarcas" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server"></asp:DropDownList>
                 </div>
             </div>
 
-        <div class="col-2">
-            <div class="mb-3">
-                <asp:Label Text="Precio Min.:" Style="color: #fff;" runat="server" />
-                <asp:TextBox runat="server" ID="txtPrecioMin" Style="color: #fff; background-color: #000;" CssClass="form-control" />
+            <div class="col-2">
+                <div class="mb-3">
+                    <asp:Label Text="Precio Min.:" Style="color: #fff;" runat="server" />
+                    <asp:TextBox runat="server" ID="txtPrecioMin" Style="color: #fff; background-color: #000;" CssClass="form-control" />
+                </div>
             </div>
-        </div>
 
-        <div class="col-2">
-            <div class="mb-3">
-                <asp:Label Text="Precio Max.:" Style="color: #fff;" runat="server" />
-                <asp:TextBox runat="server" ID="txtPrecioMax" Style="color: #fff; background-color: #000;" CssClass="form-control" />
+            <div class="col-2">
+                <div class="mb-3">
+                    <asp:Label Text="Precio Max.:" Style="color: #fff;" runat="server" />
+                    <asp:TextBox runat="server" ID="txtPrecioMax" Style="color: #fff; background-color: #000;" CssClass="form-control" />
+                </div>
             </div>
-        </div>
 
-        <div class="col-2">
-            <div class="mb-3">
-                <button class="btn btn-lg btn-success" type="submit" style="color: white; background-color: black; border: 1px solid white; margin-top: 15px">Buscar</button>
+            <div class="col-2">
+                <div class="mb-3">
+                    <asp:Button Text="🔍" runat="server" ID="btnBuscar" OnClick="btnBuscar_Click" class="btn btn-outline-light" Style="color: white; background-color: #000; border: 2px solid blue; height: 38px; margin-top: 24px; text-align: center" />
+                </div>
             </div>
-        </div>
 
+        </div>
+        <%} %>
     </div>
- </div>
 
 
     <div class="container custom-container">
         <br />
+
         <div class="row">
+
+            <div class="col-2">
+
+                <div class="mb-3">
+                    <asp:Label ID="lblMostrando" Text="Mostrando:" Visible="false" runat="server" class="form-label fw-bold fs-4" />
+                    <div>
+                        <asp:Label ID="lblResultados" Visible="false" runat="server" class="form-label fs-5" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <asp:Label ID="lblResultadoPara" Text="Resultados para:" Visible="false" runat="server" class="form-label fw-bold fs-4" />
+                    <div>
+                        <asp:Label ID="lblRegistros" Visible="false" runat="server" class="form-label fs-5" />
+                    </div>
+                </div>
+
+            </div>
+
+
             <div class="col">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" style="color: white; background-color: black; border: 1px solid white;" aria-current="page" href="#">Nuestros Artículos</a>
+                        <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Nuestros Artículos</a>
                     </li>
                 </ul>
                 <br />
                 <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                    <%if (ListaArticulo != null)
+                        { %>
+
                     <% foreach (Dominio.Articulo articulo in ListaArticulo)
                         { %>
                     <div class="col">
@@ -90,11 +120,22 @@
                             </div>
                         </div>
                     </div>
-                    <% } %>
+                    <% }%>
+
+                    <%}
+                        else
+                        {  %>
+                    <p>No se encontraron artículos.</p>
+                    <% }%>
                 </div>
             </div>
+
+
+
         </div>
     </div>
+
+
 
     <style>
         .fixed-size-card {
@@ -111,7 +152,7 @@
 
     <style>
         .custom-container {
-            max-width: 900px;
+            max-width: 100%;
             margin: auto;
         }
     </style>
@@ -124,7 +165,7 @@
 
     <style>
         body {
-            /*background-color: black;*/
+            background-color: lightgray;
             height: 100vh;
             width: 100%;
         }

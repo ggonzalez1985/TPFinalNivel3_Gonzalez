@@ -26,7 +26,7 @@
 
             <ul class="nav nav-underline justify-content-center flex-grow-1">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" aria-current="page" href="Catalogo.aspx">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Articulos</a>
@@ -79,7 +79,7 @@
 
                             <ul class="nav nav-underline d-flex justify-content-center">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Crear Cuenta</a>
+                                    <a class="nav-link" href="Login.aspx">Crear Cuenta</a>
                                 </li>
                             </ul>
                         </div>

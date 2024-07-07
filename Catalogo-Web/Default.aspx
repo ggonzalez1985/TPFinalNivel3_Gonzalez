@@ -1,6 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Catalogo_Web.Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+    <style>
+        body {
+            background-image: url('Images/BraviaFondo.jpg');
+            background-size: cover;
+            background-position: top left;
+            background-attachment: fixed;
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -17,16 +29,7 @@
         </div>
     </div>
 
-    <style>
-        body {
-            background-image: url('Images/BraviaFondo.jpg');
-            background-size: cover;
-            background-position: top left;
-            background-attachment: fixed;
-            height: 100vh;
-            width: 100vw;
-        }
-    </style>
+
 </asp:Content>
 
 
