@@ -2,6 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
+
     <style>
         body {
             background-color: lightgray;
@@ -11,9 +12,9 @@
 
         }
     </style>
-
     <script>
-        function validarCampos() {
+
+        function validarTerrenos() {
 
             var nombre = document.getElementById("<%= txtNombre.ClientID %>").value.trim();
             var apellido = document.getElementById("<%= txtApellido.ClientID %>").value.trim();
@@ -22,18 +23,20 @@
 
             if (nombre === "" || apellido === "" || email === "" || pass === "") {
                 alert("Por favor, completa todos los campos.");
-                return false; // No muestra el modal si la validación falla
+                return false;
+            } else {
+                return true;
             }
-
-            $('#staticBackdrop').modal('show');
-            return false; // Evita el envío del formulario, ya que queremos mostrar solo el modal
         }
-</script>
+
+    </script>
+
 
 </asp:Content>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
+<asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
     <div class="card mx-auto shadow-5-strong"
         style="margin-top: 50px; backdrop-filter: blur(30px); border: 1px solid black; background-color: lightgray; width: 80%;">
@@ -81,14 +84,19 @@
         </div>
     </div>
 
+    <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
 
-    <asp:Button ID="btnRegistrarse" runat="server" Text="Registrarse" OnClick="btnRegistrarse_Click"
-        type="submit" class="btn btn-block mb-4"
-        Style="display: block; margin: 20px; border: 2px solid black; margin-left: 700px;"
-        data-bs-toggle="modal" data-bs-target="#staticBackdrop" OnClientClick="return validarCampos()" />
+            <asp:Button ID="btnRegistrarse" runat="server" Text="Registrarse"
+                type="submit" CssClass="btn btn-block mb-4"
+                Style="display: block; margin: 20px; border: 2px solid black; margin-left: 700px;"
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop" OnClientClick="return validarTerrenos()" OnClick="btnRegistrarse_Click" />
 
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <%if (ConfirmaRegistracion)
+        { %>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -96,18 +104,58 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    Usuario registrado con exito! ✅
+                    Usuario registrado con éxito! ✅
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                    <asp:Button ID="btnRegistroOk" runat="server" Text="Aceptar" OnClick="btnRegistroOk_Click" type="button"
+                        CssClass="btn btn-primary" data-bs-dismiss="modal" />
                 </div>
             </div>
         </div>
     </div>
 
+    <%} %>
+
+</ContentTemplate>
+    </asp:UpdatePanel>--%>
 
 
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <asp:Button ID="btnRegistrarse" runat="server" Text="Registrarse"
+                type="submit" CssClass="btn btn-block mb-4"
+                Style="display: block; margin: 20px; border: 2px solid black; margin-left: 700px;"
+                OnClientClick="return validarTerrenos()" OnClick="btnRegistrarse_Click" />
 
+            <% if (ConfirmaRegistracion)
+                { %>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#staticBackdrop').modal('show');
+                });
+            </script>
+            <% } %>
 
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-center" id="staticBackdropLabel">Registracion</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            Usuario registrado con éxito! ✅
+                   
+                        </div>
+                        <div class="modal-footer">
+                            <asp:Button ID="btnRegistroOk" runat="server" Text="Aceptar" OnClick="btnRegistroOk_Click" type="button"
+                                CssClass="btn btn-primary" data-bs-dismiss="modal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
 </asp:Content>

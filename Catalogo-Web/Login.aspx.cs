@@ -11,18 +11,20 @@ namespace Catalogo_Web
 {
     public partial class Login : System.Web.UI.Page
     {
+        public bool ConfirmaRegistracion { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                ConfirmaRegistracion = false;
+            }
 
         }
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)
         {
-
-
             try
             {
-
                 if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtApellido.Text) || string.IsNullOrWhiteSpace(txtEmail.Text) || string.IsNullOrWhiteSpace(txtPass.Text))
                 {
                     //lblMensaje.Text = "Por favor, completa todos los campos.";
@@ -38,25 +40,29 @@ namespace Catalogo_Web
                 usuario.Password = txtPass.Text;
 
                 usuario.Id = usuarioNegocio.NuevoUsuario(usuario);
-                
+                ConfirmaRegistracion = true;
 
-                if (usuario.Id > 0)
-                {
-                    Session.Add("Usuarios", usuario);
-                    //lblMensaje.Text = "Registro exitoso.";
-                }
-                else
-                {
-                    //lblMensaje.Text = "Ocurrió un error durante el registro. Por favor, intenta de nuevo.";
-                }
+                //if (usuario.Id > 0)
+                //{
+                //    Session.Add("Usuarios", usuario);
+                //}
+                //else
+                //{                  
 
+                //}
             }
             catch (Exception)
             {
-
                 throw;
             }
+        }
 
+        protected void btnRegistroOk_Click(object sender, EventArgs e)
+        {
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtPass.Text = string.Empty;
         }
     }
 }
