@@ -17,7 +17,7 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("INSERT INTO USERS(email, pass, nombre, apellido, urlImagenPerfil, admin) VALUES (@email, @pass, @nombre, @apellido, @urlImagenPerfil,0)");
+                datos.setearConsulta("INSERT INTO USERS(email, pass, nombre, apellido, urlImagenPerfil, admin) output inserted.id VALUES (@email, @pass, @nombre, @apellido, @urlImagenPerfil,0)");
 
                 datos.setearParametro("@email", usuario.Email);
                 datos.setearParametro("@pass", usuario.Password);

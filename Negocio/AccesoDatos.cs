@@ -72,31 +72,18 @@ namespace Negocio
 
         public int ejecutarAccionScalar()
         {
-           
             comando.Connection = conexion;
             try
             {
                 conexion.Open();
-                object result = comando.ExecuteScalar();
-                if (result != null)
-                {
-                    return int.Parse(result.ToString());
-                }
-                return 0; // Valor predeterminado en caso de que ExecuteScalar devuelva null
+                return int.Parse(comando.ExecuteScalar().ToString());
             }
             catch (Exception ex)
             {
-                throw; 
+                throw ex;
             }
-            finally
-            {
-                if (conexion.State == ConnectionState.Open)
-                {
-                    conexion.Close();
-                }
-            }
-
         }
+
 
     }
 }

@@ -11,14 +11,8 @@ namespace Catalogo_Web
 {
     public partial class Login : System.Web.UI.Page
     {
-        public bool ConfirmaRegistracion { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                ConfirmaRegistracion = false;
-            }
-
         }
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)
@@ -27,8 +21,8 @@ namespace Catalogo_Web
             {
                 if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtApellido.Text) || string.IsNullOrWhiteSpace(txtEmail.Text) || string.IsNullOrWhiteSpace(txtPass.Text))
                 {
-                    //lblMensaje.Text = "Por favor, completa todos los campos.";
-                    //return; /// ESTO IMPLEMENTAR
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage", "Swal.fire('Error', 'Existen campos sin completar.', 'error');", true);
+                    return;
                 }
 
                 Usuario usuario = new Usuario();
@@ -40,29 +34,28 @@ namespace Catalogo_Web
                 usuario.Password = txtPass.Text;
 
                 usuario.Id = usuarioNegocio.NuevoUsuario(usuario);
-                ConfirmaRegistracion = true;
 
-                //if (usuario.Id > 0)
-                //{
-                //    Session.Add("Usuarios", usuario);
-                //}
-                //else
-                //{                  
+                if (usuario.Id > 0)
+                {
+                    Session.Add("Usuario", usuario);
 
-                //}
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage", "Swal.fire('Éxito', 'El usuario se ha creado exitosamente.', 'success');", true);
+
+
+                    // Evitar el postback adicional
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "clearFields", "setTimeout(function() { document.getElementById('" + txtNombre.ClientID + "').value = ''; document.getElementById('" + txtApellido.ClientID + "').value = ''; document.getElementById('" + txtEmail.ClientID + "').value = ''; document.getElementById('" + txtPass.ClientID + "').value = ''; }, 100);", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage", "Swal.fire('Error', 'Hubo un problema en la registración del usuario.', 'error');", true);
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Session.Add("error", ex.ToString());
             }
         }
 
-        protected void btnRegistroOk_Click(object sender, EventArgs e)
-        {
-            txtNombre.Text = string.Empty;
-            txtApellido.Text = string.Empty;
-            txtEmail.Text = string.Empty;
-            txtPass.Text = string.Empty;
-        }
+
     }
 }
