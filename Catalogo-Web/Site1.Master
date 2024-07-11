@@ -41,12 +41,22 @@
                     <a class="nav-link" href="#">Favoritos</a>
                 </li>
             </ul>
+
+
             <ul class="nav nav-underline">
+
+
+                <% if (!Negocio.Seguridad.sesionActiva(Session["Usuario"]))
+                    { %>
+
                 <li class="nav-item">
 
-                    <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style="position: relative; left: -20px;">Logearse/Registrarse</a>
+                    <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                        style="position: relative; left: -20px;">Logearse/Registrarse</a>
 
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="background-color: black; color: white;">
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+                        style="background-color: black; color: white;">
+
                         <div class="offcanvas-header">
                             <h5 class="offcanvas-title" id="offcanvasRightLabel">SIGN IN</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -56,6 +66,7 @@
                             </div>
 
                         </div>
+
                         <div class="offcanvas-body">
 
                             <div class="mb-3">
@@ -74,7 +85,8 @@
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label" style="display: block; text-align: center;">No Tenes Cuenta?</label>
                             </div>
-                            <img src="Images/SinCuenta.jpg" class="img-thumbnail" alt="SinCuenta" style="padding: 0; border: none; border-radius: 0; display: block; margin: 0 auto;">
+                            <img src="Images/SinCuenta.jpg" class="img-thumbnail" alt="SinCuenta"
+                                style="padding: 0; border: none; border-radius: 0; display: block; margin: 0 auto;">
                             <br />
 
                             <ul class="nav nav-underline d-flex justify-content-center">
@@ -83,9 +95,22 @@
                                 </li>
                             </ul>
                         </div>
+
+
+
                     </div>
 
                 </li>
+
+                <%}
+                    else
+                    {%>
+
+                <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-primary me-2" OnClick="btnSalir_Click" runat="server" />
+                <asp:Label ID="lblUser" Text="user" CssClass="text-light m-auto me-2" runat="server" />
+                <asp:Image ID="imgPerfil" Style="height: 40px; width: 40px; border-radius: 50%;" runat="server" />
+
+                <%} %>
             </ul>
         </div>
 

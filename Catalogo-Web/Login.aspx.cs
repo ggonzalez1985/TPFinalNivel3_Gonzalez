@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace Catalogo_Web
 {
@@ -39,21 +40,29 @@ namespace Catalogo_Web
                 {
                     Session.Add("Usuario", usuario);
 
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage", "Swal.fire('Éxito', 'El usuario se ha creado exitosamente.', 'success');", true);
+                    // Mensaje de éxito con redirección
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
+                        "Swal.fire('Éxito', 'El usuario se ha creado exitosamente.', 'success').then((result) => { if (result.isConfirmed) { window.location.href = 'Catalogo.aspx'; } });", true);
 
-
-                    // Evitar el postback adicional
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "clearFields", "setTimeout(function() { document.getElementById('" + txtNombre.ClientID + "').value = ''; document.getElementById('" + txtApellido.ClientID + "').value = ''; document.getElementById('" + txtEmail.ClientID + "').value = ''; document.getElementById('" + txtPass.ClientID + "').value = ''; }, 100);", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "clearFields",
+                        "setTimeout(function() { document.getElementById('" + txtNombre.ClientID + "').value = ''; document.getElementById('" + txtApellido.ClientID + "').value = ''; document.getElementById('" + txtEmail.ClientID + "').value = ''; document.getElementById('" + txtPass.ClientID + "').value = ''; }, 100);", true);
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage", "Swal.fire('Error', 'Hubo un problema en la registración del usuario.', 'error');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage",
+                        "Swal.fire('Error', 'Hubo un problema en la registración del usuario.', 'error');", true);
                 }
+
             }
             catch (Exception ex)
             {
                 Session.Add("error", ex.ToString());
             }
+
+
+
+
+
         }
 
 
