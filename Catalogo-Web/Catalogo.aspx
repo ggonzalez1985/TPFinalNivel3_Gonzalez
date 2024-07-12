@@ -1,7 +1,52 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Catalogo.aspx.cs" Inherits="Catalogo_Web.Catalogo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+    <style>
+        .fixed-size-card {
+            max-width: 254px;
+            height: 254px;
+        }
+
+            .fixed-size-card img {
+                width: 250px;
+                height: 250px;
+                object-fit: contain;
+            }
+    </style>
+
+    <style>
+        .custom-container {
+            max-width: 100%;
+            margin: auto;
+        }
+    </style>
+
+    <style>
+        .form-control::-webkit-input-placeholder {
+            color: #fff;
+        }
+    </style>
+
+    <style>
+        body {
+            background-color: lightgray;
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+
+    <style>
+        .card:hover .card-title,
+        .card:hover .card-text {
+            text-decoration: underline;
+        }
+    </style>
+
 </asp:Content>
+
+
+
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
@@ -19,14 +64,14 @@
                         </div>
 
                         <div class="col-auto">
-                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click" class="btn btn-lg btn-outline-light" Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />   
+                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click" class="btn btn-lg btn-outline-light" Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />
                         </div>
                     </div>
                     <br />
                 </form>
             </div>
             <div class="col-2 ">
-                <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" style="color: #FFFFFF; top: 15px;" runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
+                <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" Style="color: #FFFFFF; top: 15px;" runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
             </div>
         </div>
 
@@ -111,15 +156,24 @@
 
                     <% foreach (Dominio.Articulo articulo in ListaArticulo)
                         { %>
+
                     <div class="col">
                         <div class="card h-100 fixed-size-card">
-                            <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-no-disponible.jpg'" class="card-img-top" alt="Imagen Articulos">
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><%: articulo.Nombre %></h5>
-                                <p class="card-text">$<%: string.Format("{0:#,##0.00}", articulo.Precio) %></p>
-                            </div>
+
+                    <a href="DetalleArticulo.aspx?id=<%: articulo.Id %>" style="text-decoration: none; display: block; height: 100%; color: black;">
+
+                            
+
+                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-no-disponible.jpg'"
+                                    class="card-img-top" alt="Imagen Articulos">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><%: articulo.Nombre %></h5>
+                                    <p class="card-text">$<%: string.Format("{0:#,##0.00}", articulo.Precio) %></p>
+                                </div>
+                            </a>
                         </div>
                     </div>
+
                     <% }%>
 
                     <%}
@@ -127,6 +181,11 @@
                         {  %>
                     <p>No se encontraron artículos.</p>
                     <% }%>
+
+                    
+
+
+
                 </div>
             </div>
 
@@ -137,39 +196,7 @@
 
 
 
-    <style>
-        .fixed-size-card {
-            max-width: 254px;
-            height: 254px;
-        }
 
-            .fixed-size-card img {
-                width: 250px;
-                height: 250px;
-                object-fit: contain;
-            }
-    </style>
-
-    <style>
-        .custom-container {
-            max-width: 100%;
-            margin: auto;
-        }
-    </style>
-
-    <style>
-        .form-control::-webkit-input-placeholder {
-            color: #fff;
-        }
-    </style>
-
-    <style>
-        body {
-            background-color: lightgray;
-            height: 100vh;
-            width: 100%;
-        }
-    </style>
 
 
 

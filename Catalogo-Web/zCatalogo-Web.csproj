@@ -67,11 +67,13 @@
     <Content Include="Catalogo.aspx" />
     <Content Include="Content\styles.css" />
     <Content Include="Default.aspx" />
+    <Content Include="DetalleArticulo.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Images\BraviaFondo.jpg" />
     <Content Include="Images\Fondo1.jpg" />
     <Content Include="Images\img-no-disponible.jpg" />
     <Content Include="Images\Logo1.jpg" />
+    <Content Include="Images\PerfilGral.jpg" />
     <Content Include="Images\SinCuenta.jpg" />
     <Content Include="Login.aspx" />
     <Content Include="Web.config" />
@@ -90,6 +92,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleArticulo.aspx.cs">
+      <DependentUpon>DetalleArticulo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetalleArticulo.aspx.designer.cs">
+      <DependentUpon>DetalleArticulo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

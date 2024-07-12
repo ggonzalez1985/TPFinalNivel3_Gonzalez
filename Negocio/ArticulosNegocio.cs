@@ -14,7 +14,7 @@ namespace Negocio
     public class ArticulosNegocio
     {
 
-        public List<Articulo> Listararticulos()
+        public List<Articulo> Listararticulos(string id = "")
         {
             List<Articulo> Listado = new List<Articulo>();
             SqlConnection conexion = new SqlConnection();

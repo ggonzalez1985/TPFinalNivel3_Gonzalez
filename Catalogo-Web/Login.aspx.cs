@@ -29,6 +29,23 @@ namespace Catalogo_Web
                 Usuario usuario = new Usuario();
                 UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
 
+                if (usuarioNegocio.EmailExists(txtEmail.Text))
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage",
+                    "Swal.fire({ " +
+                    "title: 'Error', " +
+                    "text: 'El correo electrónico ya está registrado.', " +
+                    "icon: 'error', " +
+                    "confirmButtonText: 'OK'" +
+                    "}).then((result) => { " +
+                    "if (result.isConfirmed) { " +
+                    "document.getElementById('" + txtEmail.ClientID + "').value = '';" +
+                    "document.getElementById('" + txtEmail.ClientID + "').focus(); " +
+                    "}});", true);
+
+                    return;
+                }
+
                 usuario.Nombre = txtNombre.Text;
                 usuario.Apellido = txtApellido.Text;
                 usuario.Email = txtEmail.Text;
@@ -59,12 +76,42 @@ namespace Catalogo_Web
                 Session.Add("error", ex.ToString());
             }
 
-
-
-
-
         }
 
+        protected void btnIngresar_Click(object sender, EventArgs e)
+        {
+            Usuario usuario = new Usuario();
+            UsuarioNegocio negocio = new UsuarioNegocio();
 
+            try
+            {
+                if (string.IsNullOrEmpty(txtEmailLogin.Text) || string.IsNullOrEmpty(txtPassLogin.Text))
+                {
+                    Session.Add("error", "Debes completar ambos campos...");
+                    Response.Redirect("Error.aspx");
+                }
+
+                usuario.Email = txtEmailLogin.Text;
+                usuario.Password = txtPassLogin.Text;
+
+                if (negocio.Login(usuario))
+                {
+                    Session.Add("Usuario", usuario);
+                    Response.Redirect("Catalogo.aspx", false);
+                }
+                else
+                {
+                    Session.Add("error", "User o Pass incorrectos");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage",
+                        "Swal.fire({ title: 'Error', text: 'Usuario o contraseña incorrectos.', icon: 'error' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Login.aspx'; } });", true);
+                }
+            }
+            catch (System.Threading.ThreadAbortException ex) { }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex.ToString());
+                Response.Redirect("Login.aspx");
+            }
+        }
     }
 }
