@@ -71,7 +71,7 @@
     <Content Include="Global.asax" />
     <Content Include="Images\BraviaFondo.jpg" />
     <Content Include="Images\Fondo1.jpg" />
-    <Content Include="Images\img-no-disponible.jpg" />
+    <Content Include="Images\img-nd.jpg" />
     <Content Include="Images\Logo1.jpg" />
     <Content Include="Images\PerfilGral.jpg" />
     <Content Include="Images\SinCuenta.jpg" />

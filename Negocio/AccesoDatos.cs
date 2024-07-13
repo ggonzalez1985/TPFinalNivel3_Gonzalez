@@ -84,6 +84,13 @@ namespace Negocio
             }
         }
 
+        public void limpiarParametros()
+        {
+            if (comando != null)
+            {
+                comando.Parameters.Clear();
+            }
+        }
 
     }
 }

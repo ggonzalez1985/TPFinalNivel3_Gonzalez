@@ -43,6 +43,8 @@
         }
     </style>
 
+
+
 </asp:Content>
 
 
@@ -162,9 +164,8 @@
 
                     <a href="DetalleArticulo.aspx?id=<%: articulo.Id %>" style="text-decoration: none; display: block; height: 100%; color: black;">
 
-                            
+                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-nd.jpg'"
 
-                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-no-disponible.jpg'"
                                     class="card-img-top" alt="Imagen Articulos">
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><%: articulo.Nombre %></h5>
@@ -193,7 +194,6 @@
 
         </div>
     </div>
-
 
 
 

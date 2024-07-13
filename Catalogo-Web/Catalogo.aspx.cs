@@ -57,37 +57,7 @@ namespace Catalogo_Web
 
         protected void DdlCategorias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (IsPostBack)
-            //{
-            //    if (DdlCategorias.SelectedItem.Value != "")
-            //    {
-            //        int id = int.Parse(DdlCategorias.SelectedItem.Value); //aca cobntrolar que si se eligio vacio que no explote
-
-            //        if (id > 0)
-            //        {
-            //            List<Articulo> filteredArticulos = ((List<Articulo>)Session["listaArticulos"]).FindAll(x => x.IdCategoria.Id == id);
-
-            //            List<Marca> listaMarcas = new List<Marca>();
-
-            //            foreach (Articulo articulo in filteredArticulos)
-            //            {
-            //                listaMarcas.Add(articulo.IdMarca);
-            //            }
-
-            //            DdlMarcas.DataSource = listaMarcas;
-            //            DdlMarcas.DataBind();
-            //            DdlMarcas.Items.Insert(0, new ListItem("", ""));
-            //        }
-            //    }
-            //    else
-            //    {
-            //        DdlMarcas.Items.Clear();
-            //        MarcaNegocio marcaNegocio = new MarcaNegocio();
-            //        DdlMarcas.DataSource = marcaNegocio.listar();
-            //        DdlMarcas.DataBind();
-            //        DdlMarcas.Items.Insert(0, new ListItem("", ""));
-            //    }
-            //}
+            
         }
 
         protected void txtFiltro_TextChanged(object sender, EventArgs e)

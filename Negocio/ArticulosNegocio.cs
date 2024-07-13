@@ -94,7 +94,6 @@ namespace Negocio
 
         public int ObtenerIdArticulos(string CodAux)
         {
-            //Articulo ElArticulo = new Articulo();
             int codigo = new int();
             SqlConnection conexion = new SqlConnection();
             AccesoDatos datos = new AccesoDatos();
@@ -280,5 +279,224 @@ namespace Negocio
 
 
         }
+
+        public Articulo ListararticuloId(string id = "")
+        {
+            Articulo articulo = new Articulo();
+            SqlConnection conexion = new SqlConnection();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.ImagenUrl, A.Precio FROM ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdMarca = M.Id AND A.IdCategoria = C.Id and A.Id = @Id order by Categoria, Marca");
+
+                datos.setearParametro("@Id", id);
+
+                datos.ejecutarLectura();
+
+                if (datos.Lector.HasRows)
+                {
+                    datos.Lector.Read(); // Leer la primera fila
+
+                    articulo.Id = (int)datos.Lector["Id"];
+                    articulo.Codigo = (string)datos.Lector["Codigo"];
+                    articulo.Nombre = (string)datos.Lector["Nombre"];
+                    articulo.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    articulo.IdMarca = new Marca();
+                    articulo.IdMarca.Id = (int)datos.Lector["IdMarca"];
+                    articulo.IdMarca.Descripcion = (string)datos.Lector["Marca"];
+
+                    articulo.IdCategoria = new Categoria();
+                    articulo.IdCategoria.Id = (int)datos.Lector["IdCategoria"];
+                    articulo.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
+
+                    if (!(datos.Lector["ImagenUrl"] is DBNull))
+                    {
+                        articulo.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+                        articulo.Precio = (decimal)datos.Lector["Precio"];
+                    }
+                }
+                return articulo;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+        }
+
+        //public bool AgregarFavorito(int userId, int idArticulo)
+        //{
+
+        //    bool operacionExitosa = false;
+        //    AccesoDatos datos = new AccesoDatos();
+
+        //    try
+        //    {
+        //        datos.setearConsulta("INSERT INTO FAVORITOS (IdUser, IdArticulo) VALUES (@IdUser, @IdArticulo)");
+
+        //        datos.setearParametro("@IdUser", userId);
+        //        datos.setearParametro("@IdArticulo", idArticulo);
+
+        //        datos.ejecutarAccion();
+
+        //        return operacionExitosa = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error al agregar favorito: " + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        datos.cerrarConexion();
+        //    }
+
+        //    return operacionExitosa;
+        //}
+
+        public bool ToggleFavorito(int userId, int idArticulo)
+        {
+            bool operacionExitosa = false;
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                // Verificar si el artículo ya está en favoritos
+                datos.setearConsulta("SELECT COUNT(*) FROM FAVORITOS WHERE IdUser = @IdUser AND IdArticulo = @IdArticulo");
+                datos.setearParametro("@IdUser", userId);
+                datos.setearParametro("@IdArticulo", idArticulo);
+
+                datos.ejecutarLectura();
+
+                bool existeFavorito = false;
+                if (datos.Lector.Read())
+                {
+                    existeFavorito = datos.Lector.GetInt32(0) > 0;
+                }
+                datos.cerrarConexion();
+
+                datos.limpiarParametros();
+
+                if (existeFavorito)
+                {
+                    // Eliminar de favoritos
+                    datos.setearConsulta("DELETE FROM FAVORITOS WHERE IdUser = @IdUser AND IdArticulo = @IdArticulo");
+                }
+                else
+                {
+                    // Agregar a favoritos
+                    datos.setearConsulta("INSERT INTO FAVORITOS (IdUser, IdArticulo) VALUES (@IdUser, @IdArticulo)");
+                }
+
+                datos.setearParametro("@IdUser", userId);
+                datos.setearParametro("@IdArticulo", idArticulo);
+
+                datos.ejecutarAccion();
+
+                operacionExitosa = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al modificar favorito: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return operacionExitosa;
+        }
+
+        //public bool EsFavorito(int userId, int idArticulo)
+        //{
+        //    AccesoDatos datos = new AccesoDatos();
+        //    try
+        //    {
+        //        datos.setearConsulta("SELECT COUNT(*) FROM FAVORITOS WHERE IdUser = @IdUser AND IdArticulo = @IdArticulo");
+        //        datos.setearParametro("@IdUser", userId);
+        //        datos.setearParametro("@IdArticulo", idArticulo);
+
+        //        datos.ejecutarLectura();
+        //        if (datos.Lector.Read())
+        //        {
+        //            return datos.Lector.GetInt32(0) > 0;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Error al comprobar favorito: " + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        datos.cerrarConexion();
+        //    }
+
+        //    return false;
+        //}
+
+        public bool EliminarFavorito(int userId, int idArticulo)
+        {
+            bool operacionExitosa = false;
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("DELETE FROM FAVORITOS WHERE IdUser = @IdUser AND IdArticulo = @IdArticulo");
+
+                datos.setearParametro("@IdUser", userId);
+                datos.setearParametro("@IdArticulo", idArticulo);
+
+                datos.ejecutarAccion();
+
+                operacionExitosa = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al eliminar favorito: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return operacionExitosa;
+        }
+
+        public List<int> ObtenerFavoritos(int userId)
+        {
+            List<int> favoritos = new List<int>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT IdArticulo FROM FAVORITOS WHERE IdUser = @IdUser");
+                datos.setearParametro("@IdUser", userId);
+
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    favoritos.Add(datos.Lector.GetInt32(0));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al obtener favoritos: " + ex.Message);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            return favoritos;
+        }
+
+
     }
+
 }

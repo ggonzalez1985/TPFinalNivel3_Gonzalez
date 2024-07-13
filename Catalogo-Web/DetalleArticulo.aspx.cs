@@ -15,35 +15,102 @@ namespace Catalogo_Web
         public Articulo seleccionado { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
+
             try
             {
                 string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
                 if (id != "" && !IsPostBack)
                 {
                     ArticulosNegocio negocio = new ArticulosNegocio();
-                    //Articulo seleccionado = new Articulo();
+                    seleccionado = negocio.ListararticuloId(id);
+                    Session["articuloSeleccionado"] = seleccionado;
 
-                    seleccionado = (negocio.Listararticulos(id))[0];
+                    // Comprobar si el usuario está logueado
+                    if (Session["Usuario"] != null)
+                    {
+                        int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
 
-                    //TIENE QUE AGREGAR UN SOLO ARTICULO - ESE METODO QUE USA NO ESTA BIEN
+                        // Obtener la lista de favoritos del usuario desde la base de datos
+                        List<int> favoritos = negocio.ObtenerFavoritos(userId);
+                        Session["Favoritos"] = favoritos;
 
-                    //Session.Add("articuloSeleccionado", seleccionado);
+                        // Comprobar si el artículo ya es favorito y actualizar el botón
+                        bool esFavorito = favoritos.Contains(seleccionado.Id);
+                        btnAgregarFavoritos.Text = esFavorito ? "❤️" : "♡";
+                    }
+                    else
+                    {
+                        // Usuario no logueado, no se actualiza el botón de favoritos
+                        btnAgregarFavoritos.Text = "♡";
 
-
-
-                    
-
-
+                    }
                 }
-
-
-
             }
             catch (Exception ex)
             {
-                Session.Add("error", ex);
+                Session["error"] = ex;
                 Response.Redirect("Error.aspx");
             }
+
+        }
+
+        protected void btnAgregarFavoritos_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                if (!Seguridad.sesionActiva(Session["Usuario"]))
+                {
+                    Response.Redirect("Login.aspx", false);
+                }
+                else
+                {
+                    int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
+                    int idArticulo = ((Articulo)Session["articuloSeleccionado"]).Id;
+
+                    ArticulosNegocio negocio = new ArticulosNegocio();
+
+                    // Verificar si el artículo ya está en favoritos
+                    List<int> favoritos = Session["Favoritos"] as List<int>;
+                    if (favoritos == null)
+                    {
+                        favoritos = new List<int>();
+                    }
+
+                    bool esFavorito = favoritos.Contains(idArticulo);
+
+                    bool operacionExitosa;
+                    if (esFavorito)
+                    {
+                        // Eliminar de favoritos
+                        operacionExitosa = negocio.EliminarFavorito(userId, idArticulo);
+                        if (operacionExitosa)
+                        {
+                            favoritos.Remove(idArticulo);
+                            btnAgregarFavoritos.Text = "♡";
+                        }
+                    }
+                    else
+                    {
+                        // Agregar a favoritos
+                        operacionExitosa = negocio.ToggleFavorito(userId, idArticulo);
+                        if (operacionExitosa)
+                        {
+                            favoritos.Add(idArticulo);
+                            btnAgregarFavoritos.Text = "❤️";
+                        }
+                    }
+
+                    // Guardar la lista de favoritos de nuevo en la sesión
+                    Session["Favoritos"] = favoritos;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción según sea necesario
+                throw;
+            }
+
         }
     }
 }
