@@ -20,7 +20,7 @@ namespace Catalogo_Web
             if (Seguridad.sesionActiva(Session["Usuario"]))
             {
                 Usuario usuario = (Usuario)Session["Usuario"];
-                lblUser.Text = usuario.Nombre;
+                lnkUser.Text = usuario.Nombre;
                 if (!string.IsNullOrEmpty(usuario.ImagenUrl))
                     imgPerfil.ImageUrl = "~/Images/" + usuario.ImagenUrl;
             }

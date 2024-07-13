@@ -43,7 +43,11 @@
         }
     </style>
 
-
+    <style>
+        .favorite-font {
+            color: green;
+        }
+    </style>
 
 </asp:Content>
 
@@ -153,40 +157,35 @@
                 <br />
                 <div class="row row-cols-1 row-cols-md-3 g-4">
 
-                    <%if (ListaArticulo != null)
+                    <% if (ListaArticulo != null)
                         { %>
-
                     <% foreach (Dominio.Articulo articulo in ListaArticulo)
                         { %>
-
                     <div class="col">
                         <div class="card h-100 fixed-size-card">
-
-                    <a href="DetalleArticulo.aspx?id=<%: articulo.Id %>" style="text-decoration: none; display: block; height: 100%; color: black;">
-
-                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-nd.jpg'"
-
-                                    class="card-img-top" alt="Imagen Articulos">
+                            <a href="DetalleArticulo.aspx?id=<%: articulo.Id %>" style="text-decoration: none; display: block; height: 100%; color: black;">
+                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-nd.jpg'" class="card-img-top" alt="Imagen Articulos">
                                 <div class="card-body text-center">
-                                    <h5 class="card-title"><%: articulo.Nombre %></h5>
+                                    <% 
+                                        // Verificar si el artículo está en la lista de favoritos
+                                        bool esFavorito = ListaFavoritos != null && ListaFavoritos.Any(fav => fav.Id == articulo.Id);
+                        %>
+                                    <h5 class="card-title">
+                                        <%: articulo.Nombre %>
+                                        <% if (esFavorito)
+                                        { %> ❤️ <% } %>
+                        </h5>
                                     <p class="card-text">$<%: string.Format("{0:#,##0.00}", articulo.Precio) %></p>
                                 </div>
                             </a>
                         </div>
                     </div>
-
-                    <% }%>
-
-                    <%}
-                        else
-                        {  %>
+                    <% } %>
+                    <% }
+                    else
+                    { %>
                     <p>No se encontraron artículos.</p>
-                    <% }%>
-
-                    
-
-
-
+                    <% } %>
                 </div>
             </div>
 

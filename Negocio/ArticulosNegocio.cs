@@ -496,7 +496,71 @@ namespace Negocio
             return favoritos;
         }
 
+        public List<Articulo> ObtenerArticulosPorIds(List<int> idsArticulos)
+        {
+            List<Articulo> articulos = new List<Articulo>();
 
+            SqlConnection conexion = new SqlConnection();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                foreach (int idArticulo in idsArticulos)
+                {
+                    datos.setearConsulta("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, A.IdMarca, M.Descripcion Marca, A.IdCategoria, C.Descripcion Categoria, A.ImagenUrl, A.Precio FROM ARTICULOS A, CATEGORIAS C, MARCAS M WHERE A.IdMarca = M.Id AND A.IdCategoria = C.Id and A.Id = @IdArticulo order by Categoria, Marca");
+
+                    datos.setearParametro("@IdArticulo", idArticulo);
+                    datos.ejecutarLectura();
+
+                    while (datos.Lector.Read())
+                    {
+                       
+                            Articulo articulo = new Articulo();
+
+                            articulo.Id = (int)datos.Lector["Id"];
+                            articulo.Codigo = (string)datos.Lector["Codigo"];
+                            articulo.Nombre = (string)datos.Lector["Nombre"];
+                            articulo.Descripcion = (string)datos.Lector["Descripcion"];
+
+                            articulo.IdMarca = new Marca();
+                            articulo.IdMarca.Id = (int)datos.Lector["IdMarca"];
+                            articulo.IdMarca.Descripcion = (string)datos.Lector["Marca"];
+
+                            articulo.IdCategoria = new Categoria();
+                            articulo.IdCategoria.Id = (int)datos.Lector["IdCategoria"];
+                            articulo.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
+
+                            if (!(datos.Lector["ImagenUrl"] is DBNull))
+                            {
+                                articulo.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+                                articulo.Precio = (decimal)datos.Lector["Precio"];
+                            }
+
+                            articulos.Add(articulo);
+                       
+                    }
+                    datos.cerrarConexion();
+                    datos.limpiarParametros();
+
+                }
+
+                //// Cerrar la conexión y limpiar parámetros
+
+
+                return articulos;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+        }
     }
 
+
 }
+

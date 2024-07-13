@@ -13,6 +13,7 @@ namespace Catalogo_Web
     public partial class Catalogo : System.Web.UI.Page
     {
         public List<Articulo> ListaArticulo { get; set; }
+        public List<Articulo> ListaFavoritos { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,6 +35,20 @@ namespace Catalogo_Web
                         Session.Add("error", new Exception("No se encontraron artículos."));
                         Response.Redirect("Error.aspx");
                     }
+
+                    if (Session["Usuario"] != null)
+                    {
+                        int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
+
+                        // Obtener la lista de IDs de artículos favoritos del usuario desde la base de datos
+                        List<int> idsArticulosFavoritos = negocio.ObtenerFavoritos(userId);
+
+                        // Obtener los artículos correspondientes a los IDs
+                        ListaFavoritos = negocio.ObtenerArticulosPorIds(idsArticulosFavoritos);
+
+                    }
+
+
                 }
                 else
                 {

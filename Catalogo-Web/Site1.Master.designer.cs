@@ -69,13 +69,13 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.Button btnSalir;
 
         /// <summary>
-        /// Control lblUser.
+        /// Control lnkUser.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUser;
+        protected global::System.Web.UI.WebControls.HyperLink lnkUser;
 
         /// <summary>
         /// Control imgPerfil.

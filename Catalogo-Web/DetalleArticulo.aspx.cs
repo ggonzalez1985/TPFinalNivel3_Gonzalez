@@ -61,7 +61,11 @@ namespace Catalogo_Web
             {
                 if (!Seguridad.sesionActiva(Session["Usuario"]))
                 {
-                    Response.Redirect("Login.aspx", false);
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "warningMessage",
+    "Swal.fire({ title: 'Advertencia', text: 'Debes ingresar a tu cuenta o registrarte para agregar a favoritos.', icon: 'warning', showCancelButton: false, confirmButtonColor: '#3085d6', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Login.aspx'; } });", true);
+
+
                 }
                 else
                 {
