@@ -79,6 +79,7 @@
             <div class="col-2 ">
                 <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" Style="color: #FFFFFF; top: 15px;" runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
             </div>
+
         </div>
 
 

@@ -21,7 +21,7 @@ namespace Catalogo_Web
             {
                 Usuario usuario = (Usuario)Session["Usuario"];
                 lnkUser.Text = usuario.Nombre;
-                if (!string.IsNullOrEmpty(usuario.ImagenUrl))
+               if (!string.IsNullOrEmpty(usuario.ImagenUrl))
                     imgPerfil.ImageUrl = "~/Images/" + usuario.ImagenUrl;
             }
 
@@ -75,6 +75,22 @@ namespace Catalogo_Web
                 Session.Add("error", ex.ToString());
                 Response.Redirect("Login.aspx");
             }
+
+        }
+
+        protected void btnCuenta_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Micuenta.aspx");
+        }
+
+        protected void lnkSalir_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("Default.aspx");
+        }
+
+        protected void btnCerrar_Click(object sender, EventArgs e)
+        {
 
         }
     }

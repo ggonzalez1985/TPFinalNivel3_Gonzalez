@@ -66,102 +66,154 @@
 
     <form id="form1" runat="server">
 
-        <div class="d-flex justify-content-between align-items-center navbar" style="background-color: #000;">
+        <div class="container-fluid">
 
-            <img src="Images/Logo1.jpg" alt="Logo" style="width: 60px; height: 50px;">
-
-            <ul class="nav nav-underline justify-content-center flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="Catalogo.aspx">Catalogo</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Articulos</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Categorias</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Marcas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Favoritos.aspx">Favoritos</a>
-                </li>
-            </ul>
+            <div class="row" style="background-color: black;">
 
 
-            <ul class="nav nav-underline">
+                <div class="col-9">
 
+                    <div class="d-flex justify-content-between align-items-center navbar" style="background-color: #000;">
 
-                <% if (!Negocio.Seguridad.sesionActiva(Session["Usuario"]))
-                    { %>
+                        <img src="Images/Logo1.jpg" alt="Logo" style="width: 60px; height: 50px;">
 
-                <li class="nav-item">
-
-                    <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                        style="position: relative; left: -20px;">Logearse/Registrarse</a>
-
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
-                        style="background-color: black; color: white;">
-
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasRightLabel">SIGN IN</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-
-                            <div data-bs-theme="dark">
-                                <button type="button" class="btn-close" aria-label="Close"></button>
-                            </div>
-
-                        </div>
-
-                        <div class="offcanvas-body">
-
-                            <div class="mb-3">
-                                <label for="txtEmail" class="form-label">Email</label>
-                                <asp:TextBox ID="txtEmail" runat="server" type="email" class="form-control" ClientIDMode="Static"></asp:TextBox>
-
-                                <label for="inputPassword5" class="form-label">Password</label>
-                                <asp:TextBox ID="txtPass" runat="server" type="password" class="form-control" aria-describedby="passwordHelpBlock" ClientIDMode="Static"></asp:TextBox>
-
-                                <br />
-
-                                <asp:Button ID="btnLogin" runat="server" Text="Log In" class="btn mb-3"
-                                    Style="color: white; background-color: black; border: 1px solid white;" OnClientClick="return validarLogin()" OnClick="btnLogin_Click" />
-
-                            </div>
-
-                            <hr />
-
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label" style="display: block; text-align: center;">No Tenes Cuenta?</label>
-                            </div>
-                            <img src="Images/SinCuenta.jpg" class="img-thumbnail" alt="SinCuenta"
-                                style="padding: 0; border: none; border-radius: 0; display: block; margin: 0 auto;">
-                            <br />
-
-                            <ul class="nav nav-underline d-flex justify-content-center">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="Login.aspx">Crear Cuenta</a>
-                                </li>
-                            </ul>
-                        </div>
-
-
+                        <ul class="nav nav-underline justify-content-center flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="Catalogo.aspx">Catalogo</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Articulos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Categorias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Marcas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Favoritos.aspx">Favoritos</a>
+                            </li>
+                        </ul>
 
                     </div>
 
-                </li>
+                </div>
 
-                <%}
-                    else
-                    {%>
+                <div class="col-2">
 
-                <asp:Button Text="Salir" ID="btnSalir" CssClass="btn btn-outline-primary me-2" OnClick="btnSalir_Click" runat="server" />
-                <asp:HyperLink ID="lnkUser" Text="user" CssClass="text-light m-auto me-2" NavigateUrl="Micuenta.aspx" runat="server" Style="text-decoration: none;" />
-                <asp:Image ID="imgPerfil" Style="height: 40px; width: 40px; border-radius: 50%;" runat="server" ImageUrl="Images/PerfilGral.jpg" />
+                    <ul class="nav nav-underline justify-content-center flex-grow-1">
 
-                <%} %>
-            </ul>
+                        <% if (!Negocio.Seguridad.sesionActiva(Session["Usuario"]))
+                            { %>
+
+                        <li class="nav-item">
+
+                            <p style="color: white; background-color: black; padding: 2px; margin-bottom: -2px;">Hola, Inicia tu sesión</p>
+
+                            <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                                aria-controls="offcanvasRight">Logearse/Registrarse</a>
+
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel"
+                                style="background-color: black; color: white;">
+
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasRightLabel">SIGN IN</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    
+                                    <%--<div data-bs-theme="dark">--%>
+                                       <%-- <button type="button" id="btnCerrar" class="btn-close" aria-label="Close"></button>--%>
+                                        <asp:Button ID="btnCerrar" CssClass="btn-close btn-close-white" runat="server" />
+                                   <%-- </div>--%>
+
+                                </div>
+
+
+
+                                <div class="offcanvas-body">
+
+                                    <div class="mb-3">
+                                        <label for="txtEmail" class="form-label">Email</label>
+                                        <asp:TextBox ID="txtEmail" runat="server" type="email" class="form-control" ClientIDMode="Static"></asp:TextBox>
+
+                                        <label for="inputPassword5" class="form-label">Password</label>
+                                        <asp:TextBox ID="txtPass" runat="server" type="password" class="form-control" aria-describedby="passwordHelpBlock" ClientIDMode="Static"></asp:TextBox>
+
+                                        <br />
+
+                                        <asp:Button ID="btnLogin" runat="server" Text="Log In" class="btn mb-3"
+                                            Style="color: white; background-color: black; border: 1px solid white;" OnClientClick="return validarLogin()" OnClick="btnLogin_Click" />
+
+                                    </div>
+
+                                    <hr />
+
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label" style="display: block; text-align: center;">No Tenes Cuenta?</label>
+                                    </div>
+                                    <img src="Images/SinCuenta.jpg" class="img-thumbnail" alt="SinCuenta"
+                                        style="padding: 0; border: none; border-radius: 0; display: block; margin: 0 auto;">
+                                    <br />
+
+                                    <ul class="nav nav-underline d-flex justify-content-center">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="Login.aspx">Crear Cuenta</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
+                            </div>
+
+                        </li>
+
+                        <%}
+                            else
+                            {%>
+
+
+                        <div class="row ">
+                            <div class="row">
+                                <p style="color: white; background-color: black; padding: 2px; margin-bottom: -2px; margin-left: 125px;">Hola, </p>
+                                <asp:HyperLink ID="lnkUser" Text="Mi cuenta" CssClass="text-light me-2" NavigateUrl="Micuenta.aspx"
+                                    runat="server" Style="text-decoration: none; margin-left: 115px;" />
+                            </div>
+
+                            <div class="row ">
+
+
+
+                                <div class="col">
+                                    <ul class="nav nav-underline justify-content-center flex-grow-1">
+                                        <li class="nav-item">
+                                            <a class="nav-link" aria-current="page" href="Micuenta.aspx">Mi cuenta</a>
+                                        </li>
+                                        <li class="nav-item" style="margin-right: -140px;">
+                                            <asp:LinkButton ID="lnkSalir" runat="server" CssClass="nav-link" OnClick="lnkSalir_Click">Salir</asp:LinkButton>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+
+                        <%} %>
+                    </ul>
+
+                </div>
+
+                <div class="col d-flex justify-content-center align-items-center" style="height: 100%;">
+                    <asp:Image ID="imgPerfil" Style="height: 50px; width: 50px; border-radius: 50%; margin-top: 20px;" runat="server" ImageUrl="Images/PerfilGral.jpg" />
+                </div>
+
+
+            </div>
+
         </div>
+
 
         <asp:ContentPlaceHolder ID="body" runat="server">
         </asp:ContentPlaceHolder>

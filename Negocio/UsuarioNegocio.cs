@@ -106,7 +106,54 @@ namespace Negocio
             }
         }
 
-        
+        public bool modificarDatos(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE Users SET Nombre = @Nombre, Apellido = @Apellido WHERE Email = @Email");
+                datos.setearParametro("@Nombre", usuario.Nombre);
+                datos.setearParametro("@Apellido", usuario.Apellido);
+                datos.setearParametro("@Email", usuario.Email);
+                datos.ejecutarLectura();
+
+                    return true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool modificarImagen(Usuario usuario)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE Users SET urlImagenPerfil = @urlImagenPerfil WHERE Email = @Email");
+                datos.setearParametro("@urlImagenPerfil", usuario.ImagenUrl);
+                datos.setearParametro("@Email", usuario.Email);
+                datos.ejecutarLectura();
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
     }

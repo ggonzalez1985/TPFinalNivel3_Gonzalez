@@ -218,11 +218,9 @@ namespace Catalogo_Web
             }
             else
             {
-
                 string script = "alert('Establecer al menos un parametro para realizar el filtrado!');";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Alert", script, true);
 
-                //MessageBox.Show("Establecer al menos un parametro para realizar el filtrado!", "Filtrar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
         }
