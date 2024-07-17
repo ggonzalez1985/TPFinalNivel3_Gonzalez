@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Catalogo.aspx.cs" Inherits="Catalogo_Web.Catalogo" %>
+﻿<%@ Page Title="Articulos" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Articulos.aspx.cs" Inherits="Catalogo_Web.Articulos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
@@ -14,20 +14,17 @@
                 object-fit: contain;
             }
     </style>
-
     <style>
         .custom-container {
             max-width: 100%;
             margin: auto;
         }
     </style>
-
     <style>
         .form-control::-webkit-input-placeholder {
             color: #fff;
         }
     </style>
-
     <style>
         body {
             background-color: lightgray;
@@ -35,34 +32,26 @@
             width: 100%;
         }
     </style>
-
     <style>
         .card:hover .card-title,
         .card:hover .card-text {
             text-decoration: underline;
         }
     </style>
-
     <style>
         .favorite-font {
             color: green;
         }
     </style>
-
     <style>
-        #<%= txtFiltro.ClientID %>::-webkit-input-placeholder 
-        { /* Chrome, Safari, Opera */
-            color: blue;
-        }
+    #<%= txtFiltro.ClientID %>::-webkit-input-placeholder 
+    { /* Chrome, Safari, Opera */
+        color: blue;
+    }
     </style>
 
-
 </asp:Content>
-
-
-
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
 
     <div class="container-fluid" style="background-color: #000;">
 
@@ -77,17 +66,20 @@
                             <asp:TextBox runat="server" ID="txtFiltro" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" 
                             class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..." 
                             Style="color: blue; background-color: #000;" />
+
                         </div>
 
                         <div class="col-auto">
-                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click" class="btn btn-lg btn-outline-light" Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />
+                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click" class="btn btn-lg btn-outline-light"
+                                Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />
                         </div>
                     </div>
                     <br />
                 </form>
             </div>
             <div class="col-2 ">
-                <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" Style="color: #FFFFFF; top: 15px;" runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
+                <asp:CheckBox Text="Filtro Avanzado" CssClass="position-relative" ID="chkAvanzado" Style="color: #FFFFFF; top: 15px;"
+                    runat="server" AutoPostBack="true" OnCheckedChanged="chkAvanzado_CheckedChanged" />
             </div>
 
         </div>
@@ -100,7 +92,7 @@
             <div class="col-3">
                 <div class="mb-3">
                     <asp:Label Text="Categoria:" Style="color: #fff;" runat="server" />
-                    <asp:DropDownList ID="DdlCategorias" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server" OnSelectedIndexChanged="DdlCategorias_SelectedIndexChanged">
+                    <asp:DropDownList ID="DdlCategorias" Style="color: #fff; background-color: #000;" CssClass="form-select" runat="server">
                     </asp:DropDownList>
                 </div>
             </div>
@@ -127,7 +119,8 @@
 
             <div class="col-2">
                 <div class="mb-3">
-                    <asp:Button Text="🔍" runat="server" ID="btnBuscar" OnClick="btnBuscar_Click" class="btn btn-outline-light" Style="color: white; background-color: #000; border: 2px solid blue; height: 38px; margin-top: 24px; text-align: center" />
+                    <asp:Button Text="🔍" runat="server" ID="btnBuscar" OnClick="btnBuscar_Click" class="btn btn-outline-light"
+                        Style="color: white; background-color: #000; border: 2px solid blue; height: 38px; margin-top: 24px; text-align: center" />
                 </div>
             </div>
 
@@ -160,54 +153,24 @@
 
 
             <div class="col">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Nuestros Artículos</a>
-                    </li>
-                </ul>
-                <br />
-                <div class="row row-cols-1 row-cols-md-3 g-4">
 
-                    <% if (ListaArticulo != null)
-                        { %>
-                    <% foreach (Dominio.Articulo articulo in ListaArticulo)
-                        { %>
-                    <div class="col">
-                        <div class="card h-100 fixed-size-card">
-                            <a href="DetalleArticulo.aspx?id=<%: articulo.Id %>" style="text-decoration: none; display: block; height: 100%; color: black;">
-                                <img src="<%: articulo.ImagenUrl %>" onerror="this.onerror=null; this.src='Images/img-nd.jpg'" class="card-img-top" alt="Imagen Articulos">
-                                <div class="card-body text-center">
-                                    <% 
-                                        // Verificar si el artículo está en la lista de favoritos
-                                        bool esFavorito = ListaFavoritos != null && ListaFavoritos.Any(fav => fav.Id == articulo.Id);
-                        %>
-                                    <h5 class="card-title">
-                                        <%: articulo.Nombre %>
-                                        <% if (esFavorito)
-                                        { %> ❤️ <% } %>
-                        </h5>
-                                    <p class="card-text">$<%: string.Format("{0:#,##0.00}", articulo.Precio) %></p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <% } %>
-                    <% }
-                    else
-                    { %>
-                    <p></p>
-                    <% } %>
-                </div>
+                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false"
+                    OnSelectedIndexChanged="GridView1_SelectedIndexChanged" runat="server">
+                    <Columns>
+                        <asp:BoundField HeaderText="Id" DataField="Id" />
+                        <asp:BoundField HeaderText="Codigo" DataField="Codigo" />
+                        <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                        <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
+                        <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
+                        <asp:CommandField HeaderText="Detalles..." ShowSelectButton="true" SelectText="📝" />
+                    </Columns>
+                </asp:GridView> 
+
             </div>
 
 
 
         </div>
     </div>
-
-
-
-
-
 
 </asp:Content>

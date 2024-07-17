@@ -29,16 +29,16 @@
     <script>
         function validarTerrenos() {
             var nombre = document.getElementById("<%= txtNombre.ClientID %>").value.trim();
-                var apellido = document.getElementById("<%= txtApellido.ClientID %>").value.trim();
-                var email = document.getElementById("<%= txtEmail.ClientID %>").value.trim();
-                var pass = document.getElementById("<%= txtPass.ClientID %>").value.trim();
-                var passConfirmar = document.getElementById("<%= txtPassConfirmar.ClientID %>").value.trim();
+            var apellido = document.getElementById("<%= txtApellido.ClientID %>").value.trim();
+            var email = document.getElementById("<%= txtEmail.ClientID %>").value.trim();
+            var pass = document.getElementById("<%= txtPass.ClientID %>").value.trim();
+            var passConfirmar = document.getElementById("<%= txtPassConfirmar.ClientID %>").value.trim();
 
-                var txtNombre = document.getElementById("<%= txtNombre.ClientID %>");
-                var txtApellido = document.getElementById("<%= txtApellido.ClientID %>");
-                var txtEmail = document.getElementById("<%= txtEmail.ClientID %>");
-                var txtPass = document.getElementById("<%= txtPass.ClientID %>");
-                var txtPassConfirmar = document.getElementById("<%= txtPassConfirmar.ClientID %>");
+            var txtNombre = document.getElementById("<%= txtNombre.ClientID %>");
+            var txtApellido = document.getElementById("<%= txtApellido.ClientID %>");
+            var txtEmail = document.getElementById("<%= txtEmail.ClientID %>");
+            var txtPass = document.getElementById("<%= txtPass.ClientID %>");
+            var txtPassConfirmar = document.getElementById("<%= txtPassConfirmar.ClientID %>");
             var lblPassDistintas = document.getElementById("lblPassDistintas");
             var focusSet = false;
 
@@ -123,9 +123,8 @@
             return !focusSet; // Return false if focus was set, true otherwise
         }
 
-</script>
+    </script>
     <script>
-
         function validarCamposLogin() {
             var email = document.getElementById("<%= txtEmailLogin.ClientID %>").value.trim();
             var pass = document.getElementById("<%= txtPassLogin.ClientID %>").value.trim();
@@ -148,10 +147,22 @@
                 txtEmailLogin.classList.add("is-valid");
             }
 
+            if (pass === "") {
+                txtPassLogin.classList.add("is-invalid");
+                txtPassLogin.classList.remove("is-valid");
+                if (!focusSet) {
+                    txtPassLogin.focus();
+                    focusSet = true;
+                }
+            } else {
+                txtPassLogin.classList.remove("is-invalid");
+                txtPassLogin.classList.add("is-valid");
+            }
+
+            // Devuelve false si hay un error para evitar el envío del formulario
             return !focusSet;
         }
-
-    </script>
+</script>
 
 </asp:Content>
 
@@ -164,30 +175,23 @@
         <div class="row ">
 
             <div class="col">
-
-                <div class="card mx-auto shadow-5-strong"
-                    style="margin-top: 50px; backdrop-filter: blur(30px); border: 1px solid black; background-color: lightgray; width: 80%;">
-
+                <div class="card mx-auto shadow-5-strong" style="margin-top: 50px; backdrop-filter: blur(30px); border: 1px solid black; background-color: lightgray; width: 80%;">
                     <div class="card-body py-2 px-md-5">
-
                         <h2 class="fw-bold mb-5" style="text-align: center">¿Tenes una cuenta?</h2>
-
                         <div class="form-outline mb-2">
                             <asp:TextBox ID="txtEmailLogin" type="email" class="form-control" runat="server"></asp:TextBox>
-                            <label class="form-label" for="txtEmail">Ingresa tu E-mail</label>
+                            <label class="form-label" for="txtEmailLogin">Ingresa tu E-mail</label>
                         </div>
                         <div class="form-outline mb-4">
                             <asp:TextBox ID="txtPassLogin" runat="server" type="password" class="form-control"></asp:TextBox>
-                            <label class="form-label" for="txtPass">Ingresa tu contraseña</label>
+                            <label class="form-label" for="txtPassLogin">Ingresa tu contraseña</label>
                         </div>
-
                     </div>
                 </div>
                 <br />
-                <asp:Button ID="btnIngresar" runat="server" Text="Ingresar"
-                    type="submit" CssClass="btn btn-primary mb-3 mx-auto" Style="display: block; border: 2px solid black;" 
-                    OnClientClick=" return validarCamposLogin()" OnClick="btnIngresar_Click" />
-
+                <asp:Button ID="btnIngresar" runat="server" Text="Ingresar" type="submit" CssClass="btn btn-primary mb-3 mx-auto"
+                    Style="display: block; border: 2px solid black;" OnClientClick="return validarCamposLogin();"
+                    OnClick="btnIngresar_Click" />
             </div>
 
             <div class="col-7">

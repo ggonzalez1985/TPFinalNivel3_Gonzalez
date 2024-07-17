@@ -88,7 +88,9 @@ namespace Catalogo_Web
                 if (string.IsNullOrEmpty(txtEmailLogin.Text) || string.IsNullOrEmpty(txtPassLogin.Text))
                 {
                     Session.Add("error", "Debes completar ambos campos...");
-                    Response.Redirect("Error.aspx");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage",
+                        "Swal.fire({ title: 'Error', text: 'Usuario o contraseña incorrectos.', icon: 'error' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Login.aspx'; } });", true);
+                    return;
                 }
 
                 usuario.Email = txtEmailLogin.Text;
