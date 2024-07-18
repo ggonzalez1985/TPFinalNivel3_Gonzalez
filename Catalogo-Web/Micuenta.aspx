@@ -63,8 +63,48 @@
                 imgNuevoPerfil.src = 'Images/PerfilGral.jpg';
             }
         }
-</script>
+    </script>
 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <script type="text/javascript">
+        function clearCache() {
+            if ('caches' in window) {
+                caches.keys().then(function (cacheNames) {
+                    cacheNames.forEach(function (cacheName) {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+        }
+
+        window.onload = function () {
+            clearCache();
+        };
+    </script>
+
+    <script type="text/javascript">
+        function validateAndSubmit() {
+            var fileUpload = document.getElementById('<%= txtImagen.ClientID %>');
+            var focusSet = false;
+
+            if (fileUpload.value === "") {
+                fileUpload.classList.add("is-invalid");
+                fileUpload.classList.remove("is-valid");
+                if (!focusSet) {
+                    fileUpload.focus();
+                    focusSet = true;
+                }
+                return false; // Evita que se ejecute el evento OnClick del botón
+            } else {
+                fileUpload.classList.remove("is-invalid");
+                fileUpload.classList.add("is-valid");
+                return true; // Permite que se ejecute el evento OnClick del botón
+            }
+        }   
+    </script>
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -185,7 +225,8 @@
 
                     <div>
                         <br />
-                        <asp:Button ID="btnCambiarImagen" Text="Cambiar imagen" class="btn btn-primary" runat="server" OnClick="btnCambiarImagen_Click" />
+                        <asp:Button ID="btnCambiarImagen" Text="Cambiar imagen" class="btn btn-primary" runat="server" OnClientClick="return validateAndSubmit();"
+                            OnClick="btnCambiarImagen_Click" />
                     </div>
                 </asp:Panel>
 
