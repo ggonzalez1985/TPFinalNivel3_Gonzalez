@@ -84,7 +84,6 @@
 
         </div>
 
-
         <%if (chkAvanzado.Checked)
             { %>
         <div class="row">
@@ -132,6 +131,8 @@
     <div class="container custom-container">
         <br />
 
+        <asp:Label ID="Label1" runat="server" Text="📋...Listado de Articulos...📋" class="form-label fw-bold fs-4" style="display: block; text-align: center;"></asp:Label>
+
         <div class="row">
 
             <div class="col-2">
@@ -162,6 +163,7 @@
                         <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                         <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
                         <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
+<%--                        <asp:CheckBoxField HeaderText="Imagen(Si/No)" DataField="TieneImagen" />--%>
                         <asp:CommandField HeaderText="Detalles..." ShowSelectButton="true" SelectText="📝" />
                     </Columns>
                 </asp:GridView> 
