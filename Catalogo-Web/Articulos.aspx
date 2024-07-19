@@ -43,14 +43,15 @@
             color: green;
         }
     </style>
-    <style>
-    #<%= txtFiltro.ClientID %>::-webkit-input-placeholder 
-    { /* Chrome, Safari, Opera */
+
+   <style>
+    #<%= txtFiltro.ClientID %>::placeholder { /* Modern browsers */
         color: blue;
     }
     </style>
 
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
     <div class="container-fluid" style="background-color: #000;">
@@ -63,9 +64,9 @@
                             <i class="fas fa-search h4 text-body"></i>
                         </div>
                         <div class="col">
-                            <asp:TextBox runat="server" ID="txtFiltro" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" 
-                            class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..." 
-                            Style="color: blue; background-color: #000;" />
+                            <asp:TextBox runat="server" ID="txtFiltro" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged"
+                                class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..."
+                                Style="color: blue; background-color: #000;" />
 
                         </div>
 
@@ -131,8 +132,6 @@
     <div class="container custom-container">
         <br />
 
-        <asp:Label ID="Label1" runat="server" Text="📋...Listado de Articulos...📋" class="form-label fw-bold fs-4" style="display: block; text-align: center;"></asp:Label>
-
         <div class="row">
 
             <div class="col-2">
@@ -155,6 +154,14 @@
 
             <div class="col">
 
+                <ul class="nav nav-tabs">
+                <li class="nav-item">
+                 <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Listado de Articulos</a>
+                </li>
+                </ul>
+
+                <br />
+
                 <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false"
                     OnSelectedIndexChanged="GridView1_SelectedIndexChanged" runat="server">
                     <Columns>
@@ -163,10 +170,10 @@
                         <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                         <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
                         <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
-<%--                        <asp:CheckBoxField HeaderText="Imagen(Si/No)" DataField="TieneImagen" />--%>
+                        <%--                        <asp:CheckBoxField HeaderText="Imagen(Si/No)" DataField="TieneImagen" />--%>
                         <asp:CommandField HeaderText="Detalles..." ShowSelectButton="true" SelectText="📝" />
                     </Columns>
-                </asp:GridView> 
+                </asp:GridView>
 
             </div>
 

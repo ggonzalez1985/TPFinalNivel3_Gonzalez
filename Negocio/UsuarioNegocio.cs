@@ -106,6 +106,34 @@ namespace Negocio
             }
         }
 
+        public bool PassExists(int userid, string pass)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("SELECT id FROM USERS WHERE id = @userid AND pass = @pass");
+                datos.setearParametro("@userid", userid);
+                datos.setearParametro("@pass", pass);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
         public bool modificarDatos(Usuario usuario)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -119,6 +147,30 @@ namespace Negocio
                 datos.ejecutarLectura();
 
                     return true;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool modificarPassword(int usuarioId, string nuevaPassword)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("UPDATE Users SET pass = @pass WHERE Id = @Id");
+                datos.setearParametro("@pass", nuevaPassword);
+                datos.setearParametro("@Id", usuarioId);
+                datos.ejecutarLectura();
+
+                return true;
 
             }
             catch (Exception)

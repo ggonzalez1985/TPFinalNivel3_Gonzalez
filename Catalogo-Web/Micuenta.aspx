@@ -2,6 +2,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
+     <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
         function validarDatosUsuario() {
@@ -103,7 +109,73 @@
                 fileUpload.classList.add("is-valid");
                 return true; // Permite que se ejecute el evento OnClick del botón
             }
-        }   
+        }
+    </script>
+
+    <script>
+        function validatePasswords() {
+            var txtCurrentPassword = document.getElementById('<%= txtCurrentPassword.ClientID %>');
+            var txtNewPassword = document.getElementById('<%= txtNewPassword.ClientID %>');
+            var txtConfirmPassword = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+            var currentPassword = txtCurrentPassword.value;
+            var newPassword = txtNewPassword.value;
+            var confirmPassword = txtConfirmPassword.value;
+            var lblPassDistintas = document.getElementById("<%= lblPassDistintas.ClientID %>");
+            var focusSet = false;
+
+            lblPassDistintas.style.display = "none";
+
+            if (currentPassword === "") {
+                txtCurrentPassword.classList.add("is-invalid");
+                txtCurrentPassword.classList.remove("is-valid");
+                if (!focusSet) {
+                    txtCurrentPassword.focus();
+                    focusSet = true;
+                }
+            } else {
+                txtCurrentPassword.classList.remove("is-invalid");
+                txtCurrentPassword.classList.add("is-valid");
+            }
+
+            if (newPassword === "") {
+                txtNewPassword.classList.add("is-invalid");
+                txtNewPassword.classList.remove("is-valid");
+                if (!focusSet) {
+                    txtNewPassword.focus();
+                    focusSet = true;
+                }
+            } else {
+                txtNewPassword.classList.remove("is-invalid");
+                txtNewPassword.classList.add("is-valid");
+            }
+
+            if (confirmPassword === "") {
+                txtConfirmPassword.classList.add("is-invalid");
+                txtConfirmPassword.classList.remove("is-valid");
+                if (!focusSet) {
+                    txtConfirmPassword.focus();
+                    focusSet = true;
+                }
+            } else {
+                txtConfirmPassword.classList.remove("is-invalid");
+                txtConfirmPassword.classList.add("is-valid");
+            }
+
+            if (newPassword !== "" && confirmPassword !== "" && newPassword !== confirmPassword) {
+                txtNewPassword.classList.add("is-invalid");
+                txtNewPassword.classList.remove("is-valid");
+                txtConfirmPassword.classList.add("is-invalid");
+                txtConfirmPassword.classList.remove("is-valid");
+                lblPassDistintas.style.display = "block"; // Muestra el mensaje de contraseñas no coinciden
+                if (!focusSet) {
+                    txtNewPassword.focus();
+                    focusSet = true;
+                }
+                return false;
+            }
+
+            return !(currentPassword === "" || newPassword === "" || confirmPassword === "" || newPassword !== confirmPassword);
+        }
     </script>
 
 </asp:Content>
@@ -168,6 +240,16 @@
                 </asp:Panel>
 
 
+
+
+
+
+
+
+
+
+
+
                 <asp:Panel ID="pnlChangePassword" runat="server" Visible="false">
                     <br />
                     <label class="form-label" style="font-weight: bold; font-size: 18px; display: block; margin: 0 auto; text-align: center;">Cambiar contraseña</label>
@@ -184,16 +266,15 @@
                     <div>
                         <label class="form-label" style="font-weight: bold;">Confirmar nueva contraseña:</label>
                         <asp:TextBox ID="txtConfirmPassword" TextMode="Password" class="form-control" runat="server"></asp:TextBox>
+                        <asp:Label ID="lblPassDistintas" runat="server" Text="Las contraseñas no coinciden" 
+                            Style="color: red; display: none;"></asp:Label>
                     </div>
                     <br />
                     <div>
-                        <asp:Button ID="btnChangePassword" Text="Cambiar contraseña" class="btn btn-primary" runat="server" OnClick="btnChangePassword_Click" />
+                        <asp:Button ID="btnChangePassword" Text="Cambiar contraseña" class="btn btn-primary" runat="server" 
+                            OnClientClick="return validatePasswords();" OnClick="btnChangePassword_Click" />
                     </div>
                 </asp:Panel>
-
-
-
-
 
 
 
@@ -247,7 +328,24 @@
                     <label class="form-label" style="font-weight: bold; font-size: 18px; display: block; margin: 0 auto; text-align: center;">Mis favoritos</label>
                     <br />
                     <p>Aquí puedes ver tus favoritos</p>
-                    <!-- Más contenido relacionado con favoritos -->
+
+                    <asp:GridView ID="dgvFavoritos" runat="server"
+                        DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false"
+                        OnSelectedIndexChanged="dgvFavoritos_SelectedIndexChanged">
+
+                        <Columns>
+                            <asp:TemplateField HeaderText="Id" Visible="false">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblId" runat="server" Text='<%# Eval("Id") %>'></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
+                            <asp:BoundField HeaderText="Precio" DataField="Precio" DataFormatString="${0:N2}" HtmlEncode="False" />
+                            <asp:CommandField HeaderText="Detalles..." ShowSelectButton="true" SelectText="📝" />
+                        </Columns>
+
+                    </asp:GridView>
+
                 </asp:Panel>
 
 

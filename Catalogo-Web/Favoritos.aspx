@@ -73,15 +73,15 @@
             <div class="col-2">
 
                 <div class="mb-3">
-                    <asp:Label ID="lblMostrando" Text="Mostrando:" Visible="false" runat="server" class="form-label fw-bold fs-4" />
+                    <asp:Label ID="lblMostrando" Text="Mostrando:" runat="server" class="form-label fw-bold fs-4" />
                     <div>
-                        <asp:Label ID="lblResultados" Visible="false" runat="server" class="form-label fs-5" />
+                        <asp:Label ID="lblResultados" runat="server" class="form-label fs-5" />
                     </div>
                 </div>
                 <div class="mb-3">
-                    <asp:Label ID="lblResultadoPara" Text="Resultados para:" Visible="false" runat="server" class="form-label fw-bold fs-4" />
+                    <asp:Label ID="lblResultadoPara" Text="Resultados para:" runat="server" class="form-label fw-bold fs-4" />
                     <div>
-                        <asp:Label ID="lblRegistros" Visible="false" runat="server" class="form-label fs-5" />
+                        <asp:Label ID="lblRegistros" runat="server" class="form-label fs-5" />
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@
             <div class="col">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Tus articulos favoritos</a>
+                        <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Tus favoritos</a>
                     </li>
                 </ul>
                 <br />

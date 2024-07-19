@@ -44,6 +44,10 @@ namespace Catalogo_Web
                     {
                         // Manejar el caso donde no hay usuario autenticado
                     }
+
+                    lblResultados.Text = ListaArticulo.Count.ToString();
+                    lblRegistros.Text = "-";
+
                 }
                 else
                 {
