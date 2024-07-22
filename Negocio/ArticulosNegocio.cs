@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dominio;
+using System.Web;
 
 namespace Negocio
 {
@@ -44,7 +45,38 @@ namespace Negocio
                     aux.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
 
                     if (!(datos.Lector["ImagenUrl"] is DBNull))
-                        aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+                    {
+                        // Obtener la URL de la imagen del lector
+                        string imagenUrl = (string)datos.Lector["ImagenUrl"];
+
+                        // Verificar si la URL es null o vacía
+                        if (!string.IsNullOrEmpty(imagenUrl))
+                        {
+                            // Verificar si la URL ya es una URL completa
+                            if (imagenUrl.StartsWith("http://") || imagenUrl.StartsWith("https://"))
+                            {
+                                // La URL ya es completa, asignarla directamente
+                                aux.ImagenUrl = imagenUrl;
+                            }
+                            else
+                            {
+                                // La URL es relativa, agregar el prefijo
+                                aux.ImagenUrl = "~/Images/" + imagenUrl;
+                            }
+                        }
+                        else
+                        {
+                            // Manejar el caso si la URL es null o vacía
+                            aux.ImagenUrl = "~/Images/img-nd.jpg";
+                        }
+                    }
+                    else
+                    {
+                        // Manejar el caso si no hay URL de imagen
+                        aux.ImagenUrl = "~/Images/img-nd.jpg";
+                    }
+
+
                     aux.Precio = (decimal)datos.Lector["Precio"];
 
                     Listado.Add(aux);
@@ -123,7 +155,7 @@ namespace Negocio
             return codigo;
         }
 
-        public void EditarArticulo(Articulo nuevo)
+        public bool EditarArticulo(Articulo nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
 
@@ -142,6 +174,7 @@ namespace Negocio
 
                 datos.ejecutarAccion();
 
+                return true;
 
             }
             catch (Exception)
@@ -158,7 +191,7 @@ namespace Negocio
 
         }
 
-        public void Eliminar(int Id)
+        public bool Eliminar(int Id)
         {
             try
             {
@@ -166,7 +199,7 @@ namespace Negocio
                 datos.setearConsulta("delete from ARTICULOS where Id = @id");
                 datos.setearParametro("@id", Id);
                 datos.ejecutarAccion();
-
+                return true ;
             }
             catch (Exception ex)
             {
@@ -514,38 +547,63 @@ namespace Negocio
 
                     while (datos.Lector.Read())
                     {
-                       
-                            Articulo articulo = new Articulo();
 
-                            articulo.Id = (int)datos.Lector["Id"];
-                            articulo.Codigo = (string)datos.Lector["Codigo"];
-                            articulo.Nombre = (string)datos.Lector["Nombre"];
-                            articulo.Descripcion = (string)datos.Lector["Descripcion"];
+                        Articulo articulo = new Articulo();
 
-                            articulo.IdMarca = new Marca();
-                            articulo.IdMarca.Id = (int)datos.Lector["IdMarca"];
-                            articulo.IdMarca.Descripcion = (string)datos.Lector["Marca"];
+                        articulo.Id = (int)datos.Lector["Id"];
+                        articulo.Codigo = (string)datos.Lector["Codigo"];
+                        articulo.Nombre = (string)datos.Lector["Nombre"];
+                        articulo.Descripcion = (string)datos.Lector["Descripcion"];
 
-                            articulo.IdCategoria = new Categoria();
-                            articulo.IdCategoria.Id = (int)datos.Lector["IdCategoria"];
-                            articulo.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
+                        articulo.IdMarca = new Marca();
+                        articulo.IdMarca.Id = (int)datos.Lector["IdMarca"];
+                        articulo.IdMarca.Descripcion = (string)datos.Lector["Marca"];
 
-                            if (!(datos.Lector["ImagenUrl"] is DBNull))
+                        articulo.IdCategoria = new Categoria();
+                        articulo.IdCategoria.Id = (int)datos.Lector["IdCategoria"];
+                        articulo.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
+
+
+                        if (!(datos.Lector["ImagenUrl"] is DBNull))
+                        {
+                            // Obtener la URL de la imagen del lector
+                            string imagenUrl = (string)datos.Lector["ImagenUrl"];
+
+                            // Verificar si la URL es null o vacía
+                            if (!string.IsNullOrEmpty(imagenUrl))
                             {
-                                articulo.ImagenUrl = (string)datos.Lector["ImagenUrl"];
-                                articulo.Precio = (decimal)datos.Lector["Precio"];
+                                // Verificar si la URL ya es una URL completa
+                                if (imagenUrl.StartsWith("http://") || imagenUrl.StartsWith("https://"))
+                                {
+                                    // La URL ya es completa, asignarla directamente
+                                    articulo.ImagenUrl = imagenUrl;
+                                }
+                                else
+                                {
+                                    // La URL es relativa, agregar el prefijo
+                                    articulo.ImagenUrl = "~/Images/" + imagenUrl;
+                                }
                             }
+                            else
+                            {
+                                // Manejar el caso si la URL es null o vacía
+                                articulo.ImagenUrl = "~/Images/img-nd.jpg";
+                            }
+                        }
+                        else
+                        {
+                            // Manejar el caso si no hay URL de imagen
+                            articulo.ImagenUrl = "~/Images/img-nd.jpg";
+                        }
 
-                            articulos.Add(articulo);
-                       
+                        articulo.Precio = (decimal)datos.Lector["Precio"];
+                        articulos.Add(articulo);
+
                     }
                     datos.cerrarConexion();
                     datos.limpiarParametros();
 
                 }
-
-                //// Cerrar la conexión y limpiar parámetros
-
 
                 return articulos;
             }

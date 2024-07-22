@@ -55,7 +55,8 @@
         <div class="row">
             <div class="col-4">
                 <figure class="figure">
-                    <img src="<%: seleccionado.ImagenUrl %>" class="figure-img fixed-size-img" alt="alt" onerror="this.onerror=null; this.src='Images/img-nd.jpg'">
+                    <%--<img src="<%: seleccionado.ImagenUrl %>" class="figure-img fixed-size-img" alt="alt" onerror="this.onerror=null; this.src='Images/img-nd.jpg'">--%>
+                    <img src="<%: ResolveUrl(seleccionado.ImagenUrl) %>" class="figure-img fixed-size-img" alt="alt" onerror="this.onerror=null; this.src='<%= ResolveUrl("~/Images/img-nd.jpg") %>'">
                     <figcaption class="figure-caption" style="text-align: center;">ID del producto: <%: seleccionado.Id %></figcaption>
                 </figure>
             </div>

@@ -50,6 +50,33 @@
     }
     </style>
 
+    <style> 
+
+        .group-box {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.group-box-header {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+.group-box-header h4 {
+    margin: 0;
+}
+
+.group-box-body {
+    padding: 10px;
+}
+
+    </style>
+
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
@@ -136,18 +163,39 @@
 
             <div class="col-2">
 
+                <asp:Panel ID="pnlResultados" runat="server" CssClass="group-box">
+        <div class="group-box-header">
+            <h4>Resultados</h4>
+        </div>
+        <div class="group-box-body">
+            <div class="mb-3">
+                <asp:Label ID="lblMostrando" Text="Mostrando:" runat="server" CssClass="form-label fw-bold fs-4" />
+                <div>
+                    <asp:Label ID="lblResultados" runat="server" CssClass="form-label fs-5" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <asp:Label ID="lblResultadoPara" Text="Resultados para:" runat="server" CssClass="form-label fw-bold fs-4" />
+                <div>
+                    <asp:Label ID="lblRegistros" runat="server" CssClass="form-label fs-5" />
+                </div>
+            </div>
+            </div>
+                </asp:Panel>
+
+                <asp:Panel ID="pnlBotones" runat="server" CssClass="group-box">
+                <div class="group-box-header">
+                 <h4>Acciones</h4>
+                </div>
+                <div class="group-box-body">
                 <div class="mb-3">
-                    <asp:Label ID="lblMostrando" Text="Mostrando:" runat="server" class="form-label fw-bold fs-4" />
-                    <div>
-                        <asp:Label ID="lblResultados" runat="server" class="form-label fs-5" />
-                    </div>
+                <asp:Button ID="btnNuevo" runat="server" Text="➕ Nuevo" CssClass="btn btn-dark text-white" />
                 </div>
                 <div class="mb-3">
-                    <asp:Label ID="lblResultadoPara" Text="Resultados para:" runat="server" class="form-label fw-bold fs-4" />
-                    <div>
-                        <asp:Label ID="lblRegistros" runat="server" class="form-label fs-5" />
-                    </div>
+                <asp:Button ID="btnEliminar" runat="server" Text="❌ Eliminar" CssClass="btn btn-dark text-white" />
                 </div>
+                </div>
+                </asp:Panel>
 
             </div>
 

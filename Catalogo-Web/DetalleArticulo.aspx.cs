@@ -22,12 +22,13 @@ namespace Catalogo_Web
                 if (id != "" && !IsPostBack)
                 {
                     ArticulosNegocio negocio = new ArticulosNegocio();
-                    seleccionado = negocio.ListararticuloId(id);
-                    Session["articuloSeleccionado"] = seleccionado;
 
                     // Comprobar si el usuario está logueado
                     if (Session["Usuario"] != null)
                     {
+                        seleccionado = negocio.ListararticuloId(id);
+                        Session["articuloSeleccionado"] = seleccionado;
+
                         int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
 
                         // Obtener la lista de favoritos del usuario desde la base de datos
@@ -37,13 +38,40 @@ namespace Catalogo_Web
                         // Comprobar si el artículo ya es favorito y actualizar el botón
                         bool esFavorito = favoritos.Contains(seleccionado.Id);
                         btnAgregarFavoritos.Text = esFavorito ? "❤️" : "♡";
+
                     }
                     else
                     {
-                        // Usuario no logueado, no se actualiza el botón de favoritos
                         btnAgregarFavoritos.Text = "♡";
-
                     }
+                        // Usuario no logueado, no se actualiza el botón de favoritos
+                        seleccionado = negocio.ListararticuloId(id);
+                        Session["articuloSeleccionado"] = seleccionado;
+                        
+
+                        if (!string.IsNullOrEmpty(seleccionado.ImagenUrl))
+                        {
+                            // Verificar si la URL ya es una URL completa
+                            if (seleccionado.ImagenUrl.StartsWith("http://") || seleccionado.ImagenUrl.StartsWith("https://"))
+                            {
+                                // La URL ya es una URL completa, no se necesita modificarla
+                                seleccionado.ImagenUrl = seleccionado.ImagenUrl;
+                            }
+                            else
+                            {
+                                // La URL es relativa, agregar el prefijo
+                                seleccionado.ImagenUrl = ResolveUrl("~/Images/" + seleccionado.ImagenUrl);
+                            }
+                        }
+                        else
+                        {
+                            // Imagen por defecto si no hay URL
+                            seleccionado.ImagenUrl = ResolveUrl("~/Images/img-nd.jpg");
+                        }
+
+
+
+                    
                 }
             }
             catch (Exception ex)

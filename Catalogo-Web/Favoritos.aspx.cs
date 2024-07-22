@@ -39,14 +39,17 @@ namespace Catalogo_Web
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "errorMessage", "Swal.fire('Advertencia', 'No tenes artículos favoritos.', 'warning');", true);
                         }
 
+
+                        lblResultados.Text = ListaArticulo.Count.ToString();
+                        lblRegistros.Text = "-";
+
                     }
                     else
                     {
                         // Manejar el caso donde no hay usuario autenticado
                     }
 
-                    lblResultados.Text = ListaArticulo.Count.ToString();
-                    lblRegistros.Text = "-";
+                    
 
                 }
                 else
