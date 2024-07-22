@@ -87,7 +87,7 @@ namespace Catalogo_Web
             }
         }
 
-
+        //TODO: SEGUIR CON LA PARTE GENERAL DE ARTICULOS. BORRAR MULTIPLE y boton de AGREGAR + FALTA
 
 
         protected void btnReset_Click(object sender, EventArgs e)
