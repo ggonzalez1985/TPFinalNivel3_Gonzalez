@@ -147,25 +147,6 @@
         }
     </script>
 
-    <script type="text/javascript">
-        function confirmarEliminacion() {
-            Swal.fire({
-                title: '¿Está seguro de eliminar?',
-                text: "¡No podrá revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminarlo!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Llamar al servidor para realizar la eliminación
-                    __doPostBack('<%= btnEliminar.UniqueID %>', '');
-                }
-            });
-        }
-    </script>
-
     <style>
         .group-box1 {
             border: 1px solid #ddd;
@@ -243,6 +224,25 @@
                 }
     </style>
 
+        <script type="text/javascript">
+            function isNumber(event) {
+                var charCode = event.which ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+                return true;
+            }
+
+            function formatPrice(element) {
+                var value = element.value.replace(/,/g, ''); // Remover comas existentes
+                if (value === '') {
+                    return;
+                }
+                value = parseInt(value); // Convertir a número entero
+                element.value = value.toLocaleString('en-US'); // Formatear con separadores de miles
+            }
+        </script>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
 
@@ -271,7 +271,7 @@
 
                 <div>
                     <label class="form-label">Id:</label>
-                    <asp:TextBox ID="txtId" Style="cursor: not-allowed; width: 100px;" class="form-control" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtId" Style="cursor: not-allowed; width: 100px;" class="form-control" runat="server" ReadOnly="true"></asp:TextBox>
                 </div>
 
                 <div>
@@ -308,7 +308,7 @@
 
                 <div>
                     <label class="form-label">Precio: ($)</label>
-                    <asp:TextBox ID="txtPrecio" class="form-control" runat="server" Style="width: 62%;"></asp:TextBox>
+                    <asp:TextBox ID="txtPrecio" class="form-control" runat="server" Style="width: 62%;" onkeypress="return isNumber(event)" onblur="formatPrice(this)"></asp:TextBox>
                 </div>
 
                 <div class="group-box">

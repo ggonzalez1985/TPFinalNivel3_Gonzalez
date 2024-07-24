@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-xxxx" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.4/dist/sweetalert2.all.min.js"></script>
 
     <style>
         .fixed-size-card {
@@ -49,13 +49,11 @@
             color: green;
         }
     </style>
-
    <style>
     #<%= txtFiltro.ClientID %>::placeholder { /* Modern browsers */
         color: blue;
     }
     </style>
-
     <style> 
 
         .group-box {
@@ -205,9 +203,12 @@
                 
                 <div class="mb-3">
 
-                <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" OnClick="LinkButton1_Click">➕ Nuevo</asp:LinkButton>
+                <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" 
+                    OnClick="LinkButton1_Click">➕ Nuevo</asp:LinkButton>
                     <br /><br />
-                    <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-dark text-white" >❌ Eliminar</asp:LinkButton>
+                    <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-dark text-white"
+                    OnClientClick="return confirmarEliminacion();" OnClick="lnkEliminar_Click">❌ Eliminar</asp:LinkButton>
+
 
                 </div>
                 </div>

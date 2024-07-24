@@ -105,11 +105,8 @@ namespace Catalogo_Web
 
                 if (ValidarFormulario(out Articulo articulo))
                 {
-
-                    //no puede ir al id xq no tiene id todavia
-
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
-                        $"Swal.fire('Éxito', 'El articulo guardado exitosamente.', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Articulos.aspx'; }} }});", true);
+                        $"Swal.fire('Éxito', 'Articulo guardado exitosamente!', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Articulos.aspx'; }} }});", true);
                 }
             }
             catch (Exception ex)
@@ -125,6 +122,7 @@ namespace Catalogo_Web
             ArticulosNegocio negocio = new ArticulosNegocio();
             Articulo seleccionado = (Articulo)Session["articuloSeleccionado"];
             bool Guardado = false;
+            bool Existente = false;
 
             if (string.IsNullOrEmpty(txtCodigo.Text.Trim()))
             {
@@ -158,73 +156,86 @@ namespace Catalogo_Web
 
             if (!string.IsNullOrEmpty(txtPrecio.Text.Trim()))
             {
-                string soloNumeros = Regex.Replace(txtPrecio.Text, @"[^\d,]", "");
-                soloNumeros = soloNumeros.Replace(',', '.');
+                string soloNumeros = Regex.Replace(txtPrecio.Text, @"[^\d]", "");
 
-                if (decimal.TryParse(soloNumeros, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal resultado))
+                if (decimal.TryParse(soloNumeros, NumberStyles.None, CultureInfo.InvariantCulture, out decimal resultado))
                 {
                     articulo.Precio = resultado;
                 }
                 else
                 {
-                    return false;
+                    return false; // Manejar el caso en que la conversión falle
                 }
             }
             else
             {
-                return false;
+                return false; // Manejar el caso en que el campo esté vacío
             }
 
             if (!string.IsNullOrEmpty(txtId.Text.Trim()))
             {
                 articulo.Id = int.Parse(txtId.Text);
+                Existente = true;
             }
 
-            //aca el id es vacio.
-
-            if (txtImagen.PostedFile.FileName != "")
+            if (!Existente)
             {
-
-                string ruta = Server.MapPath("./Images/");
-                //string imagenTemporal = "articulo-" + articulo.Id + ".jpg";
-                string imagenTemporal = "articulo-" + 0 + ".jpg";
-
-                txtImagen.PostedFile.SaveAs(ruta + imagenTemporal);
-
-                articulo.ImagenUrl = imagenTemporal; //articulo-0.jpg
-                int id = negocio.GuardarConImg(articulo); //aca ya crea el ID
-
-                string imagenFinal = "articulo-" + id + ".jpg";
-                txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
-                negocio.ActualizarImagenArticulo(id, imagenFinal);
-
-                Guardado = true;
-            }
-            else
-            {
-                string imageUrl = imgArticulo.ImageUrl;
-
-                if (imageUrl.StartsWith("/Images/"))
+                if (txtImagen.PostedFile.FileName != "")
                 {
-                    imageUrl = imageUrl.Replace("/Images/", "");
+
+                    string ruta = Server.MapPath("./Images/");
+                    string imagenTemporal = "articulo-" + 0 + ".jpg";
+
+                    txtImagen.PostedFile.SaveAs(ruta + imagenTemporal);
+
+                    articulo.ImagenUrl = imagenTemporal; //articulo-0.jpg
+                    int id = negocio.GuardarConImg(articulo); //aca ya crea el ID
+
+                    string imagenFinal = "articulo-" + id + ".jpg";
+                    txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
+                    negocio.ActualizarImagenArticulo(id, imagenFinal);
+
+                    Guardado = true;
                 }
-                articulo.ImagenUrl = imageUrl;
-            }
+                else
+                {
+                    string imageUrl = imgArticulo.ImageUrl;
 
-            if (Guardado == false)
+                    if (imageUrl.StartsWith("/Images/"))
+                    {
+                        imageUrl = imageUrl.Replace("/Images/", "");
+                    }
+                    articulo.ImagenUrl = imageUrl;
+                }
+
+                if (Guardado == false)
+                {
+                    negocio.Guardar(articulo);
+                }
+
+            }
+            else //else por el lado de si existe el articulo y solo asignarle la imagen.
             {
-                negocio.Guardar(articulo); //aca no vovler a entrar por que ya se guardo el arti y su imagemn....seguir aca
+                //if (txtImagen.PostedFile.FileName != "") //cuando se edita, te borra. pero la imagen esta si
+                string defaultImageUrl = "https://www.palomacornejo.com/wp-content/uploads/2021/08/no-image.jpg";
+                if (imgArticulo.ImageUrl != defaultImageUrl)
+                {
+                    string ruta = Server.MapPath("./Images/");
+                    string imagenFinal = "articulo-" + articulo.Id + ".jpg";
+
+                    //txtImagen.PostedFile.SaveAs(ruta + imagenFinal);    //copia una imagen que no esta. tiene que copiar del otro!!!!
+
+                    articulo.ImagenUrl = imagenFinal;
+
+                    txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
+                    //negocio.ActualizarImagenArticulo(articulo.Id, imagenFinal); //no actualiza todos los demas campos.
+                }
+                else
+                {
+                    articulo.ImagenUrl = "";
+                }
+                negocio.EditarArticulo(articulo);
             }
-            
-
-
-
-
-
-
-
-
-
 
             return true;
 

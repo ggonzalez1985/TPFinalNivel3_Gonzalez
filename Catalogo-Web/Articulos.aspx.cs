@@ -18,18 +18,18 @@ namespace Catalogo_Web
             {
                 if (!IsPostBack)
                 {
-                    
-                        // Crear instancia del negocio
-                        ArticulosNegocio negocio = new ArticulosNegocio();
 
-                        // Obtener la lista de artículos
-                        ListaArticulo = negocio.Listararticulos();
+                    // Crear instancia del negocio
+                    ArticulosNegocio negocio = new ArticulosNegocio();
 
-                        // Verificar si se obtuvieron artículos
-                        if (ListaArticulo != null)
-                        {
+                    // Obtener la lista de artículos
+                    ListaArticulo = negocio.Listararticulos();
+
+                    // Verificar si se obtuvieron artículos
+                    if (ListaArticulo != null)
+                    {
                         // Almacenar la lista de artículos en la sesión
-                        //Session["listaArticulos"] = ListaArticulo;
+                        Session["listaArticulos"] = ListaArticulo;
 
                         // Asignar la lista al DataSource del GridView y enlazar datos
                         dgvArticulos.DataSource = ListaArticulo;
@@ -38,13 +38,25 @@ namespace Catalogo_Web
                         // Reiniciar controles
                         reiniciaControles();
                     }
-                        else
-                        {
-                            // Si no se encontraron artículos, redirigir a la página de error
-                            Session.Add("error", new Exception("No se encontraron artículos."));
-                            Response.Redirect("Error.aspx");
-                        }
-                    
+                    else
+                    {
+                        // Si no se encontraron artículos, redirigir a la página de error
+                        Session.Add("error", new Exception("No se encontraron artículos."));
+                        Response.Redirect("Error.aspx");
+                    }
+
+                }
+                else
+                {
+
+                    ListaArticulo = Session["listaArticulos"] as List<Articulo>;
+
+                    if (ListaArticulo == null)
+                    {
+                        Session.Add("error", new Exception("No se encontraron artículos en la sesión."));
+                        Response.Redirect("Error.aspx");
+                    }
+
                 }
 
             }
@@ -221,5 +233,40 @@ namespace Catalogo_Web
         {
             Response.Redirect("DetalleArticuloEditable.aspx");
         }
+
+        protected void lnkEliminar_Click(object sender, EventArgs e)
+        {
+            ArticulosNegocio negocio = new ArticulosNegocio();
+            ArticulosNegocio articulosNegocio = new ArticulosNegocio();
+            ListaArticulo = negocio.Listararticulos();
+            int contadorSeleccionados = 0;
+            int contadorEliminados = 0;
+
+            try
+            {
+                List<int> idsSeleccionados = new List<int>();
+
+                foreach (GridViewRow row in dgvArticulos.Rows)
+                {
+                    // Buscar el CheckBox en la fila
+                    CheckBox chkEliminar = (CheckBox)row.FindControl("chkEliminar");
+                    if (chkEliminar != null && chkEliminar.Checked)
+                    {
+                        // Obtener el ID del artículo de la columna DataKey
+                        int id = Convert.ToInt32(dgvArticulos.DataKeys[row.RowIndex].Value);
+                        idsSeleccionados.Add(id);
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+
+        }
     }
+
 }
