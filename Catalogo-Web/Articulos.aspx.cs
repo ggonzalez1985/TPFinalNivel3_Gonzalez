@@ -18,37 +18,33 @@ namespace Catalogo_Web
             {
                 if (!IsPostBack)
                 {
-                    ArticulosNegocio negocio = new ArticulosNegocio();
-                    ListaArticulo = negocio.Listararticulos();
+                    
+                        // Crear instancia del negocio
+                        ArticulosNegocio negocio = new ArticulosNegocio();
 
-                    if (ListaArticulo != null)
-                    {
-                        Session["listaArticulos"] = ListaArticulo;
+                        // Obtener la lista de artículos
+                        ListaArticulo = negocio.Listararticulos();
 
+                        // Verificar si se obtuvieron artículos
+                        if (ListaArticulo != null)
+                        {
+                        // Almacenar la lista de artículos en la sesión
+                        //Session["listaArticulos"] = ListaArticulo;
 
-
-                        dgvArticulos.DataSource = Session["listaArticulos"];
+                        // Asignar la lista al DataSource del GridView y enlazar datos
+                        dgvArticulos.DataSource = ListaArticulo;
                         dgvArticulos.DataBind();
 
+                        // Reiniciar controles
                         reiniciaControles();
                     }
-                    else
-                    {
-                        Session.Add("error", new Exception("No se encontraron artículos."));
-                        Response.Redirect("Error.aspx");
-                    }
-
-                }
-                else
-                {
-
-                    ListaArticulo = Session["listaArticulos"] as List<Articulo>;
-
-                    if (ListaArticulo == null)
-                    {
-                        Session.Add("error", new Exception("No se encontraron artículos en la sesión."));
-                        Response.Redirect("Error.aspx");
-                    }
+                        else
+                        {
+                            // Si no se encontraron artículos, redirigir a la página de error
+                            Session.Add("error", new Exception("No se encontraron artículos."));
+                            Response.Redirect("Error.aspx");
+                        }
+                    
                 }
 
             }
@@ -86,9 +82,6 @@ namespace Catalogo_Web
                 dgvArticulos.DataBind();
             }
         }
-
-        //TODO: SEGUIR CON LA PARTE GENERAL DE ARTICULOS. BORRAR MULTIPLE y boton de AGREGAR + FALTA
-
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
@@ -224,6 +217,9 @@ namespace Catalogo_Web
 
         }
 
-
+        protected void LinkButton1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("DetalleArticuloEditable.aspx");
+        }
     }
 }

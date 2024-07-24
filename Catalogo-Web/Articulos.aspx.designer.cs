@@ -141,22 +141,22 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.Panel pnlBotones;
 
         /// <summary>
-        /// Control btnNuevo.
+        /// Control lnkNuevoArticulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNuevo;
+        protected global::System.Web.UI.WebControls.LinkButton lnkNuevoArticulo;
 
         /// <summary>
-        /// Control btnEliminar.
+        /// Control lnkEliminar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEliminar;
+        protected global::System.Web.UI.WebControls.LinkButton lnkEliminar;
 
         /// <summary>
         /// Control dgvArticulos.

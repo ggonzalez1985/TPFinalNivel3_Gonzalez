@@ -44,49 +44,48 @@ namespace Catalogo_Web
                     ArticulosNegocio negocio = new ArticulosNegocio();
                     Articulo selecccionado = negocio.ListararticuloId(id);
 
-                    Session.Add("articuloSeleccionado", selecccionado);
-
-                    txtId.Text = id;
-                    txtCodigo.Text = selecccionado.Codigo;
-                    txtNombre.Text = selecccionado.Nombre;
-                    txtDescripcion.Text = selecccionado.Descripcion;
-                    txtPrecio.Text = selecccionado.Precio.ToString("C2", new CultureInfo("es-AR"));
-
-                    DdlCategoria.SelectedValue = selecccionado.IdCategoria.ToString();
-                    DdlMarca.SelectedValue = selecccionado.IdCategoria.ToString();
-
-                    if (!string.IsNullOrEmpty(selecccionado.ImagenUrl))
+                    if (selecccionado.Id != 0)
                     {
-                        // Verificar si la URL ya es una URL completa
-                        if (selecccionado.ImagenUrl.StartsWith("http://") || selecccionado.ImagenUrl.StartsWith("https://"))
+
+                        Session.Add("articuloSeleccionado", selecccionado);
+
+                        txtId.Text = id;
+                        txtCodigo.Text = selecccionado.Codigo;
+                        txtNombre.Text = selecccionado.Nombre;
+                        txtDescripcion.Text = selecccionado.Descripcion;
+                        txtPrecio.Text = selecccionado.Precio.ToString("C2", new CultureInfo("es-AR"));
+
+                        DdlCategoria.SelectedValue = selecccionado.IdCategoria.ToString();
+                        DdlMarca.SelectedValue = selecccionado.IdCategoria.ToString();
+
+                        if (!string.IsNullOrEmpty(selecccionado.ImagenUrl))
                         {
-                            // La URL ya es una URL completa, no se necesita modificarla
-                            imgArticulo.ImageUrl = selecccionado.ImagenUrl;
+
+                            if (selecccionado.ImagenUrl.StartsWith("http://") || selecccionado.ImagenUrl.StartsWith("https://"))
+                            {
+                                imgArticulo.ImageUrl = selecccionado.ImagenUrl;
+                            }
+                            else
+                            {
+                                imgArticulo.ImageUrl = ResolveUrl("~/Images/" + selecccionado.ImagenUrl);
+                            }
                         }
                         else
                         {
-                            // La URL es relativa, agregar el prefijo
-                            imgArticulo.ImageUrl = ResolveUrl("~/Images/" + selecccionado.ImagenUrl);
+                            imgArticulo.ImageUrl = ResolveUrl("~/Images/img-nd.jpg");
+                        }
+
+                        if (selecccionado.IdMarca != null)
+                        {
+                            DdlMarca.SelectedValue = selecccionado.IdMarca.Id.ToString();
+
+                        }
+                        if (selecccionado.IdCategoria != null)
+                        {
+                            DdlCategoria.SelectedValue = selecccionado.IdCategoria.Id.ToString();
+
                         }
                     }
-                    else
-                    {
-                        // Imagen por defecto si no hay URL
-                        imgArticulo.ImageUrl = ResolveUrl("~/Images/img-nd.jpg");
-                    }
-
-
-                    if (selecccionado.IdMarca != null)
-                    {
-                        DdlMarca.SelectedValue = selecccionado.IdMarca.Id.ToString();
-
-                    }
-                    if (selecccionado.IdCategoria != null)
-                    {
-                        DdlCategoria.SelectedValue = selecccionado.IdCategoria.Id.ToString();
-
-                    }
-
 
                 }
 
@@ -104,27 +103,14 @@ namespace Catalogo_Web
             try
             {
 
-                ArticulosNegocio negocio = new ArticulosNegocio();
-                bool resultado = false;
-
                 if (ValidarFormulario(out Articulo articulo))
                 {
-                    if (Request.QueryString["id"] != null)
-                    {
-                        resultado = negocio.EditarArticulo(articulo);
-                    }
 
-                    string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
+                    //no puede ir al id xq no tiene id todavia
 
-                    if (id != "" && resultado)
-                    {
-
-                        // Utiliza ScriptManager para registrar el script de SweetAlert2
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
-                            $"Swal.fire('Éxito', 'El articulo se ha modificado exitosamente.', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'DetalleArticuloEditable.aspx?id={id}'; }} }});", true);
-                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
+                        $"Swal.fire('Éxito', 'El articulo guardado exitosamente.', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Articulos.aspx'; }} }});", true);
                 }
-
             }
             catch (Exception ex)
             {
@@ -136,7 +122,9 @@ namespace Catalogo_Web
         private bool ValidarFormulario(out Articulo articulo)
         {
             articulo = new Articulo();
+            ArticulosNegocio negocio = new ArticulosNegocio();
             Articulo seleccionado = (Articulo)Session["articuloSeleccionado"];
+            bool Guardado = false;
 
             if (string.IsNullOrEmpty(txtCodigo.Text.Trim()))
             {
@@ -168,30 +156,6 @@ namespace Catalogo_Web
             }
             articulo.IdCategoria = new Categoria { Id = idCategoria };
 
-            articulo.ImagenUrl = imgArticulo.ImageUrl;
-
-            if (txtImagen.PostedFile.FileName != "")
-            {
-                string ruta = Server.MapPath("./Images/");
-                txtImagen.PostedFile.SaveAs(ruta + "articulo-" + seleccionado.Id + ".jpg");
-                articulo.ImagenUrl = "articulo-" + seleccionado.Id + ".jpg";
-            }
-
-
-            if (txtImagen.PostedFile.FileName == "")
-            {
-                string imageUrl = imgArticulo.ImageUrl;
-
-                // Eliminar "/Images/" de la URL
-                if (imageUrl.StartsWith("/Images/"))
-                {
-                    imageUrl = imageUrl.Replace("/Images/", "");
-                }
-
-                // Asignar la URL de la imagen a la propiedad ImagenUrl del objeto articulo
-                articulo.ImagenUrl = imageUrl;
-            }
-
             if (!string.IsNullOrEmpty(txtPrecio.Text.Trim()))
             {
                 string soloNumeros = Regex.Replace(txtPrecio.Text, @"[^\d,]", "");
@@ -211,10 +175,62 @@ namespace Catalogo_Web
                 return false;
             }
 
-            articulo.Id = int.Parse(txtId.Text);
+            if (!string.IsNullOrEmpty(txtId.Text.Trim()))
+            {
+                articulo.Id = int.Parse(txtId.Text);
+            }
+
+            //aca el id es vacio.
+
+            if (txtImagen.PostedFile.FileName != "")
+            {
+
+                string ruta = Server.MapPath("./Images/");
+                //string imagenTemporal = "articulo-" + articulo.Id + ".jpg";
+                string imagenTemporal = "articulo-" + 0 + ".jpg";
+
+                txtImagen.PostedFile.SaveAs(ruta + imagenTemporal);
+
+                articulo.ImagenUrl = imagenTemporal; //articulo-0.jpg
+                int id = negocio.GuardarConImg(articulo); //aca ya crea el ID
+
+                string imagenFinal = "articulo-" + id + ".jpg";
+                txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
+                negocio.ActualizarImagenArticulo(id, imagenFinal);
+
+                Guardado = true;
+            }
+            else
+            {
+                string imageUrl = imgArticulo.ImageUrl;
+
+                if (imageUrl.StartsWith("/Images/"))
+                {
+                    imageUrl = imageUrl.Replace("/Images/", "");
+                }
+                articulo.ImagenUrl = imageUrl;
+            }
+
+            if (Guardado == false)
+            {
+                negocio.Guardar(articulo); //aca no vovler a entrar por que ya se guardo el arti y su imagemn....seguir aca
+            }
+            
+
+
+
+
+
+
+
+
+
 
             return true;
+
         }
+
+
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
@@ -225,13 +241,13 @@ namespace Catalogo_Web
                 bool resultado;
                 resultado = negocio.Eliminar(int.Parse(txtId.Text));
 
-                if (resultado) 
+                if (resultado)
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
                     "Swal.fire({ title: 'Eliminado', text: 'El artículo ha sido eliminado.', icon: 'success', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'articulos.aspx'; } });", true);
                 }
 
-                    
+
             }
             catch (Exception ex)
             {

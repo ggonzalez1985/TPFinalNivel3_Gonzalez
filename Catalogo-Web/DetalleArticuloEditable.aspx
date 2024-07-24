@@ -167,12 +167,12 @@
     </script>
 
     <style>
-        .group-box {
+        .group-box1 {
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: #f9f9f9;
             padding: 10px;
-            margin-top: 20px;
+            margin-top: 145px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -271,7 +271,7 @@
 
                 <div>
                     <label class="form-label">Id:</label>
-                    <asp:TextBox ID="txtId" ReadOnly="true" Style="cursor: not-allowed; width: 100px;" class="form-control" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtId" Style="cursor: not-allowed; width: 100px;" class="form-control" runat="server"></asp:TextBox>
                 </div>
 
                 <div>
@@ -338,10 +338,11 @@
                 <br />
 
 
-                <div class="group-box">
+                <div class="group-box1">
                     <div class="button-group">
                         <asp:Button ID="btnAceptar" Text="Aceptar" CssClass="btn btn-success" runat="server"
                             OnClientClick="return validarFormulario();" OnClick="btnAceptar_Click" />
+
                         <asp:Button ID="btnCancelar" Text="Cancelar" CssClass="btn btn-danger" runat="server"
                             OnClientClick="confirmarCancelacion(); return false;" />
                     </div>

@@ -2,6 +2,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-xxxx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.js"></script>
+
+
     <style>
         .fixed-size-card {
             max-width: 254px;
@@ -75,11 +81,12 @@
 }
 
     </style>
-
+   
 
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
+    
 
     <div class="container-fluid" style="background-color: #000;">
 
@@ -153,12 +160,19 @@
 
         </div>
         <%} %>
+
+            
+
+
+
     </div>
 
 
-    <div class="container custom-container">
-        <br />
 
+    <div class="container custom-container">
+
+        <br />
+        
         <div class="row">
 
             <div class="col-2">
@@ -188,11 +202,13 @@
                  <h4>Acciones</h4>
                 </div>
                 <div class="group-box-body">
+                
                 <div class="mb-3">
-                <asp:Button ID="btnNuevo" runat="server" Text="➕ Nuevo" CssClass="btn btn-dark text-white" />
-                </div>
-                <div class="mb-3">
-                <asp:Button ID="btnEliminar" runat="server" Text="❌ Eliminar" CssClass="btn btn-dark text-white" />
+
+                <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" OnClick="LinkButton1_Click">➕ Nuevo</asp:LinkButton>
+                    <br /><br />
+                    <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-dark text-white" >❌ Eliminar</asp:LinkButton>
+
                 </div>
                 </div>
                 </asp:Panel>
@@ -218,16 +234,26 @@
                         <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                         <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
                         <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
-                        <%--                        <asp:CheckBoxField HeaderText="Imagen(Si/No)" DataField="TieneImagen" />--%>
-                        <asp:CommandField HeaderText="Detalles..." ShowSelectButton="true" SelectText="📝" />
+                        <asp:CommandField HeaderText="Editar" ShowSelectButton="true" SelectText="📝" />
+                        <asp:TemplateField HeaderText="Eliminar">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkEliminar" runat="server" />
+                        </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
 
+               
             </div>
 
+            
 
 
         </div>
     </div>
+
+
+    
+
 
 </asp:Content>

@@ -93,7 +93,7 @@ namespace Negocio
             }
         }
 
-        public void Agregar(Articulo nuevo)
+        public bool Agregar(Articulo nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
 
@@ -111,6 +111,8 @@ namespace Negocio
 
                 datos.ejecutarAccion();
 
+                return true;
+
             }
             catch (Exception)
             {
@@ -123,6 +125,76 @@ namespace Negocio
             }
 
         }
+
+
+        public bool Guardar(Articulo nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("INSERT INTO ARTICULOS(Codigo,Nombre,Descripcion,IdMarca,IdCategoria,Precio) VALUES(@idCodigo, @Nombre, @descripcion, @IdMarca, @IdCategoria, @Precio)");
+
+                datos.setearParametro("@idCodigo", nuevo.Codigo);
+                datos.setearParametro("@Nombre", nuevo.Nombre);
+                datos.setearParametro("@descripcion", nuevo.Descripcion);
+                datos.setearParametro("@IdMarca", nuevo.IdMarca.Id);
+                datos.setearParametro("@IdCategoria", nuevo.IdCategoria.Id);
+                datos.setearParametro("@Precio", nuevo.Precio);
+
+                datos.ejecutarAccion();
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+        }
+
+
+        public int GuardarConImg(Articulo nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.setearConsulta("INSERT INTO ARTICULOS(Codigo,Nombre,Descripcion,IdMarca,IdCategoria, ImagenUrl,Precio) output inserted.id VALUES(@idCodigo, @Nombre, @descripcion, @IdMarca, @IdCategoria, @ImagenUrl, @Precio)");
+
+                datos.setearParametro("@idCodigo", nuevo.Codigo);
+                datos.setearParametro("@Nombre", nuevo.Nombre);
+                datos.setearParametro("@descripcion", nuevo.Descripcion);
+                datos.setearParametro("@IdMarca", nuevo.IdMarca.Id);
+                datos.setearParametro("@IdCategoria", nuevo.IdCategoria.Id);
+                datos.setearParametro("@ImagenUrl", nuevo.ImagenUrl);
+                datos.setearParametro("@Precio", nuevo.Precio);
+
+                return datos.ejecutarAccionScalar();
+
+                //return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+        }
+
+
+
 
         public int ObtenerIdArticulos(string CodAux)
         {
@@ -186,9 +258,33 @@ namespace Negocio
             {
                 datos.cerrarConexion();
             }
+        }
 
+        public bool ActualizarImagenArticulo(int id, string imagenFinal)
+        {
+            AccesoDatos datos = new AccesoDatos();
 
+            try
+            {
+                datos.setearConsulta("UPDATE ARTICULOS SET ImagenUrl = @imagenFinal Where Id = @id");
 
+                datos.setearParametro("@imagenFinal", imagenFinal);
+                datos.setearParametro("@id", id);
+
+                datos.ejecutarAccion();
+
+                return true;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
 
         public bool Eliminar(int Id)
