@@ -187,11 +187,11 @@ namespace Catalogo_Web
             }
         }
 
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string id = dgvArticulos.SelectedDataKey.Value.ToString();
-            Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
-        }
+        //protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    string id = dgvArticulos.SelectedDataKey.Value.ToString();
+        //    Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
+        //}
 
         protected void chkAvanzado_CheckedChanged(object sender, EventArgs e)
         {
@@ -234,38 +234,27 @@ namespace Catalogo_Web
             Response.Redirect("DetalleArticuloEditable.aspx");
         }
 
-        protected void lnkEliminar_Click(object sender, EventArgs e)
+        protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ArticulosNegocio negocio = new ArticulosNegocio();
-            ArticulosNegocio articulosNegocio = new ArticulosNegocio();
-            ListaArticulo = negocio.Listararticulos();
-            int contadorSeleccionados = 0;
-            int contadorEliminados = 0;
+            string id = dgvArticulos.SelectedDataKey.Value.ToString();
+            Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
+        }
 
-            try
-            {
-                List<int> idsSeleccionados = new List<int>();
+        protected void lnkEditar_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("DetalleArticuloEditable.aspx");
+        }  
 
-                foreach (GridViewRow row in dgvArticulos.Rows)
-                {
-                    // Buscar el CheckBox en la fila
-                    CheckBox chkEliminar = (CheckBox)row.FindControl("chkEliminar");
-                    if (chkEliminar != null && chkEliminar.Checked)
-                    {
-                        // Obtener el ID del artículo de la columna DataKey
-                        int id = Convert.ToInt32(dgvArticulos.DataKeys[row.RowIndex].Value);
-                        idsSeleccionados.Add(id);
-                    }
-                }
+        protected void lnkEditar_Click2(object sender, EventArgs e)
+        {
+            int a = 1;
+        }
 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+        //TODO: DEFINIR LA LOGICA PARA ESTOS DOS EVENTOS "EDITAR" Y "ELIMINAR"
 
-
-
+        protected void lnkEliminar_Click1(object sender, EventArgs e)
+        {
+            int b = 2;
         }
     }
 

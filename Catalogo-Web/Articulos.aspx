@@ -8,6 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.4/dist/sweetalert2.all.min.js"></script>
 
+   
+
+
     <style>
         .fixed-size-card {
             max-width: 254px;
@@ -206,8 +209,6 @@
                 <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" 
                     OnClick="LinkButton1_Click">➕ Nuevo</asp:LinkButton>
                     <br /><br />
-                    <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-dark text-white"
-                    OnClientClick="return confirmarEliminacion();" OnClick="lnkEliminar_Click">❌ Eliminar</asp:LinkButton>
 
 
                 </div>
@@ -227,24 +228,31 @@
 
                 <br />
 
-                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false"
-                    OnSelectedIndexChanged="GridView1_SelectedIndexChanged" runat="server">
+
+
+                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false" runat="server">
                     <Columns>
                         <asp:BoundField HeaderText="Id" DataField="Id" />
                         <asp:BoundField HeaderText="Codigo" DataField="Codigo" />
                         <asp:BoundField HeaderText="Nombre" DataField="Nombre" />
                         <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
                         <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
-                        <asp:CommandField HeaderText="Editar" ShowSelectButton="true" SelectText="📝" />
-                        <asp:TemplateField HeaderText="Eliminar">
-                        <ItemTemplate>
-                            <asp:CheckBox ID="chkEliminar" runat="server" />
-                        </ItemTemplate>
-                        </asp:TemplateField>
+                        
+                        <asp:TemplateField HeaderText="Acciones">
+            <ItemTemplate>
+                <!-- Botón para Editar -->
+                <asp:LinkButton ID="lnkEditar" runat="server" CssClass="btn btn-dark text-white" 
+                    CommandName="Edit" OnClick="lnkEditar_Click2" CommandArgument='<%# Eval("Id") %>'>📝 Editar</asp:LinkButton>
+
+                <!-- Botón para Eliminar -->
+                <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-danger text-white" 
+                    CommandName="Delete" OnClick="lnkEliminar_Click1" CommandArgument='<%# Eval("Id") %>'>🗑️ Eliminar</asp:LinkButton>
+            </ItemTemplate>
+        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
 
-               
+
             </div>
 
             
