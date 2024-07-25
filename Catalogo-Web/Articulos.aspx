@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Articulos" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Articulos.aspx.cs" Inherits="Catalogo_Web.Articulos" %>
+﻿<%@ Page Title="Articulos" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Articulos.aspx.cs" Inherits="Catalogo_Web.Articulos" EnableEventValidation="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
@@ -9,7 +9,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.4/dist/sweetalert2.all.min.js"></script>
 
    
-
+    <script type="text/javascript">
+        function confirmarEliminacion(id) {
+            Swal.fire({
+                title: '¿Está seguro de eliminar?',
+                text: "¡No podrá revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Guarda el ID del artículo en el HiddenField
+                    document.getElementById('<%= hfDeleteId.ClientID %>').value = id;
+                // Realiza el postback para ejecutar la eliminación
+                document.getElementById('<%= btnConfirmar.ClientID %>').click();
+            }
+        });
+            return false; // Evita el postback automático
+        }
+</script>
 
     <style>
         .fixed-size-card {
@@ -238,19 +259,29 @@
                         <asp:BoundField HeaderText="Categoria" DataField="IdCategoria.Descripcion" />
                         <asp:BoundField HeaderText="Marca" DataField="IdMarca.Descripcion" />
                         
-                        <asp:TemplateField HeaderText="Acciones">
-            <ItemTemplate>
-                <!-- Botón para Editar -->
-                <asp:LinkButton ID="lnkEditar" runat="server" CssClass="btn btn-dark text-white" 
-                    CommandName="Edit" OnClick="lnkEditar_Click2" CommandArgument='<%# Eval("Id") %>'>📝 Editar</asp:LinkButton>
+                        <asp:TemplateField HeaderText="Editar">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkEditar" runat="server" CssClass="btn btn-dark text-white" 
+                                CommandName="Edit" OnClick="lnkEditar_Click2" CommandArgument='<%# Eval("Id") %>'>📝</asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
-                <!-- Botón para Eliminar -->
+                    <asp:TemplateField HeaderText="Eliminar">
+            <ItemTemplate>
                 <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-danger text-white" 
-                    CommandName="Delete" OnClick="lnkEliminar_Click1" CommandArgument='<%# Eval("Id") %>'>🗑️ Eliminar</asp:LinkButton>
+                    CommandArgument='<%# Eval("Id") %>' Text="🗑️"
+                    OnClientClick='<%# "return confirmarEliminacion(\"" + Eval("Id") + "\");" %>' OnClick="lnkEliminar_Click1" />
             </ItemTemplate>
         </asp:TemplateField>
+
+
+
                     </Columns>
                 </asp:GridView>
+
+                <asp:HiddenField ID="hfDeleteId" runat="server" />
+                <asp:Button ID="btnConfirmar" runat="server" Style="display:none;" OnClick="btnConfirmar_Click" />
+
 
 
             </div>

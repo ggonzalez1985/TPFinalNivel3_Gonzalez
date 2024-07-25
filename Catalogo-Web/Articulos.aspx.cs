@@ -11,7 +11,7 @@ namespace Catalogo_Web
 {
     public partial class Articulos : System.Web.UI.Page
     {
-        public List<Articulo> ListaArticulo { get; set; }
+        public List<Articulo> ListaArticulo { get; set; }    
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -234,28 +234,45 @@ namespace Catalogo_Web
             Response.Redirect("DetalleArticuloEditable.aspx");
         }
 
-        protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string id = dgvArticulos.SelectedDataKey.Value.ToString();
-            Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
-        }
-
-        protected void lnkEditar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("DetalleArticuloEditable.aspx");
-        }  
-
         protected void lnkEditar_Click2(object sender, EventArgs e)
         {
-            int a = 1;
+            LinkButton lnkButton = sender as LinkButton;
+            if (lnkButton != null)
+            {
+                string id = lnkButton.CommandArgument;
+                Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
+            }
         }
-
-        //TODO: DEFINIR LA LOGICA PARA ESTOS DOS EVENTOS "EDITAR" Y "ELIMINAR"
+ 
 
         protected void lnkEliminar_Click1(object sender, EventArgs e)
         {
             int b = 2;
         }
+
+        protected void btnConfirmar_Click(object sender, EventArgs e)
+        {
+            string id = hfDeleteId.Value;
+            if (!string.IsNullOrEmpty(id))
+            {
+                // Lógica para eliminar el artículo con el ID obtenido
+                EliminarArticulo(id);
+            }
+        }
+
+        private void EliminarArticulo(string id)
+        {
+            // Implementa la lógica para eliminar el artículo de la base de datos aquí
+            // Ejemplo:
+            // using (SqlConnection conn = new SqlConnection("your_connection_string"))
+            // {
+            //     SqlCommand cmd = new SqlCommand("DELETE FROM Articulos WHERE Id = @Id", conn);
+            //     cmd.Parameters.AddWithValue("@Id", id);
+            //     conn.Open();
+            //     cmd.ExecuteNonQuery();
+            // }
+        }
+
     }
 
 }
