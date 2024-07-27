@@ -8,30 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.4/dist/sweetalert2.all.min.js"></script>
 
-   
-    <script type="text/javascript">
-        function confirmarEliminacion(id) {
-            Swal.fire({
-                title: '¿Está seguro de eliminar?',
-                text: "¡No podrá revertir esto!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminarlo!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Guarda el ID del artículo en el HiddenField
-                    document.getElementById('<%= hfDeleteId.ClientID %>').value = id;
-                // Realiza el postback para ejecutar la eliminación
-                document.getElementById('<%= btnConfirmar.ClientID %>').click();
-            }
-        });
-            return false; // Evita el postback automático
-        }
-</script>
-
     <style>
         .fixed-size-card {
             max-width: 254px;
@@ -251,7 +227,7 @@
 
 
 
-                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false" runat="server">
+                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" OnRowDeleting="dgvArticulos_RowDeleting" AutoGenerateColumns="false" runat="server">
                     <Columns>
                         <asp:BoundField HeaderText="Id" DataField="Id" />
                         <asp:BoundField HeaderText="Codigo" DataField="Codigo" />
@@ -268,9 +244,7 @@
 
                     <asp:TemplateField HeaderText="Eliminar">
             <ItemTemplate>
-                <asp:LinkButton ID="lnkEliminar" runat="server" CssClass="btn btn-danger text-white" 
-                    CommandArgument='<%# Eval("Id") %>' Text="🗑️"
-                    OnClientClick='<%# "return confirmarEliminacion(\"" + Eval("Id") + "\");" %>' OnClick="lnkEliminar_Click1" />
+                <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-danger text-white" Text="🗑️" />
             </ItemTemplate>
         </asp:TemplateField>
 
@@ -279,10 +253,7 @@
                     </Columns>
                 </asp:GridView>
 
-                <asp:HiddenField ID="hfDeleteId" runat="server" />
-                <asp:Button ID="btnConfirmar" runat="server" Style="display:none;" OnClick="btnConfirmar_Click" />
-
-
+                
 
             </div>
 

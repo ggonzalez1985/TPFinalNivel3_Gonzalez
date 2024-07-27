@@ -187,11 +187,6 @@ namespace Catalogo_Web
             }
         }
 
-        //protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    string id = dgvArticulos.SelectedDataKey.Value.ToString();
-        //    Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
-        //}
 
         protected void chkAvanzado_CheckedChanged(object sender, EventArgs e)
         {
@@ -243,36 +238,42 @@ namespace Catalogo_Web
                 Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
             }
         }
- 
 
-        protected void lnkEliminar_Click1(object sender, EventArgs e)
+        protected void dgvArticulos_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            int b = 2;
-        }
 
-        protected void btnConfirmar_Click(object sender, EventArgs e)
-        {
-            string id = hfDeleteId.Value;
-            if (!string.IsNullOrEmpty(id))
+            ArticulosNegocio negocio = new ArticulosNegocio();
+            ArticulosNegocio articulosNegocio = new ArticulosNegocio();
+
+            try
             {
-                // Lógica para eliminar el artículo con el ID obtenido
-                EliminarArticulo(id);
+                int id = Convert.ToInt32(dgvArticulos.DataKeys[e.RowIndex].Value);
+                bool bandera = negocio.Eliminar(id);
+                ListaArticulo = negocio.Listararticulos();
+
+                if (ListaArticulo != null)
+                {
+                    Session["listaArticulos"] = ListaArticulo;
+                    dgvArticulos.DataSource = Session["listaArticulos"];
+                    dgvArticulos.DataBind();
+
+                    reiniciaControles();
+                }
+                else
+                {
+                    Session.Add("error", new Exception("No se encontraron artículos."));
+                    Response.Redirect("Error.aspx");
+                }
+
+
             }
-        }
+            catch (Exception)
+            {
+                throw;
+            }
 
-        private void EliminarArticulo(string id)
-        {
-            // Implementa la lógica para eliminar el artículo de la base de datos aquí
-            // Ejemplo:
-            // using (SqlConnection conn = new SqlConnection("your_connection_string"))
-            // {
-            //     SqlCommand cmd = new SqlCommand("DELETE FROM Articulos WHERE Id = @Id", conn);
-            //     cmd.Parameters.AddWithValue("@Id", id);
-            //     conn.Open();
-            //     cmd.ExecuteNonQuery();
-            // }
-        }
 
+        }
     }
 
 }
