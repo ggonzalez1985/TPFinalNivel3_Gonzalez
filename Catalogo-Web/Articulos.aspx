@@ -7,6 +7,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.4.19/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        var object = { status: false, ele: null };
+        function conFunction(ev) {
+            var evnt = ev;
+            if (object.status) { return true; }
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "¡No podrá recuperar este artículo!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "¡Sí, elimínelo!",
+                closeOnConfirm: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    object.status = true;
+                    object.ele = evnt;
+                    evnt.click();
+                }
+            })
+
+            return object.status;
+        };
+    </script>
 
     <style>
         .fixed-size-card {
@@ -80,6 +108,10 @@
 
     </style>
    
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
 
 </asp:Content>
 
@@ -227,7 +259,7 @@
 
 
 
-                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" OnRowDeleting="dgvArticulos_RowDeleting" AutoGenerateColumns="false" runat="server">
+                <asp:GridView ID="dgvArticulos" DataKeyNames="Id" CssClass="table" OnRowDeleting="dgvArticulos_RowDeleting1" AutoGenerateColumns="false" runat="server">
                     <Columns>
                         <asp:BoundField HeaderText="Id" DataField="Id" />
                         <asp:BoundField HeaderText="Codigo" DataField="Codigo" />
@@ -243,10 +275,11 @@
                     </asp:TemplateField>
 
                     <asp:TemplateField HeaderText="Eliminar">
-            <ItemTemplate>
-                <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-danger text-white" Text="🗑️" />
-            </ItemTemplate>
-        </asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-danger text-white" Text="🗑️" 
+                        OnClientClick="return conFunction(this);" />
+                    </ItemTemplate>
+                </asp:TemplateField>
 
 
 

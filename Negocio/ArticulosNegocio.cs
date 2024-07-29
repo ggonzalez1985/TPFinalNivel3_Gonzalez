@@ -233,14 +233,13 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria ,ImagenUrl = @ImagenUrl, Precio = @Precio Where Id = @id");
+                datos.setearConsulta("UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria , Precio = @Precio Where Id = @id");
 
                 datos.setearParametro("@Codigo", nuevo.Codigo);
                 datos.setearParametro("@Nombre", nuevo.Nombre);
                 datos.setearParametro("@Descripcion", nuevo.Descripcion);
                 datos.setearParametro("@IdMarca", nuevo.IdMarca.Id);
                 datos.setearParametro("@IdCategoria", nuevo.IdCategoria.Id);
-                datos.setearParametro("@ImagenUrl", nuevo.ImagenUrl);
                 datos.setearParametro("@Precio", nuevo.Precio);
                 datos.setearParametro("@id", nuevo.Id);
 
@@ -439,11 +438,11 @@ namespace Negocio
                     articulo.IdCategoria = new Categoria();
                     articulo.IdCategoria.Id = (int)datos.Lector["IdCategoria"];
                     articulo.IdCategoria.Descripcion = (string)datos.Lector["Categoria"];
+                    articulo.Precio = (decimal)datos.Lector["Precio"];
 
                     if (!(datos.Lector["ImagenUrl"] is DBNull))
                     {
-                        articulo.ImagenUrl = (string)datos.Lector["ImagenUrl"];
-                        articulo.Precio = (decimal)datos.Lector["Precio"];
+                        articulo.ImagenUrl = (string)datos.Lector["ImagenUrl"];  
                     }
                 }
                 return articulo;

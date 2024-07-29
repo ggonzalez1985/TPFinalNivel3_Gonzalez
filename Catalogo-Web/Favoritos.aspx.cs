@@ -44,6 +44,11 @@ namespace Catalogo_Web
                             lblResultados.Text = "-";
                             lblRegistros.Text = "-";
                         }
+                        else
+                        {
+                            lblResultados.Text = ListaArticulo.Count.ToString();
+                            lblRegistros.Text = "Favoritos";
+                        }
                         
 
                     }

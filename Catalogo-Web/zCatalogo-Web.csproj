@@ -66,6 +66,7 @@
   <ItemGroup>
     <Content Include="Articulos.aspx" />
     <Content Include="Catalogo.aspx" />
+    <Content Include="Categorias.aspx" />
     <Content Include="Content\styles.css" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleArticulo.aspx" />
@@ -96,6 +97,13 @@
     </Compile>
     <Compile Include="Catalogo.aspx.designer.cs">
       <DependentUpon>Catalogo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Categorias.aspx.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Categorias.aspx.designer.cs">
+      <DependentUpon>Categorias.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

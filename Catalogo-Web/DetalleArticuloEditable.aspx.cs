@@ -3,6 +3,7 @@ using Negocio;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -156,25 +157,41 @@ namespace Catalogo_Web
 
             if (!string.IsNullOrEmpty(txtPrecio.Text.Trim()))
             {
-                string soloNumeros = Regex.Replace(txtPrecio.Text, @"[^\d]", "");
+                // Obtener el valor del campo de texto y eliminar el símbolo de dólar
+                string textoPrecio = txtPrecio.Text.Trim().Replace("$", "");
 
-                if (decimal.TryParse(soloNumeros, NumberStyles.None, CultureInfo.InvariantCulture, out decimal resultado))
+                // Reemplazar el separador de miles (si es punto) y convertir la coma decimal a punto
+                string textoFormatoDecimal = textoPrecio.Replace(",", "").Replace(".", ",");
+
+                // Intentar convertir el texto a decimal
+                if (decimal.TryParse(textoFormatoDecimal, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal resultado))
                 {
-                    articulo.Precio = resultado;
+
+                    // Ajustar el valor para obtener 12500,00
+                    decimal valorAjustado = resultado / 100;
+
+                    // Asignar el valor convertido a la propiedad Precio
+                    articulo.Precio = valorAjustado;
+
+                    // Actualizar el campo de texto con el formato deseado usando la cultura es-AR
+                    txtPrecio.Text = resultado.ToString("#,##0.00", new CultureInfo("es-AR")).Replace(".", ",");
                 }
                 else
                 {
-                    return false; // Manejar el caso en que la conversión falle
+                    // Manejar el caso en que la conversión falle
+                    return false; // O cualquier otro manejo de errores que necesites
                 }
             }
             else
             {
-                return false; // Manejar el caso en que el campo esté vacío
+                // Manejar el caso en que el campo esté vacío
+                return false; // O cualquier otro manejo de errores que necesites
             }
 
             if (!string.IsNullOrEmpty(txtId.Text.Trim()))
             {
                 articulo.Id = int.Parse(txtId.Text);
+                if(articulo.Id != 0)
                 Existente = true;
             }
 
@@ -216,24 +233,42 @@ namespace Catalogo_Web
             }
             else //else por el lado de si existe el articulo y solo asignarle la imagen.
             {
-                //if (txtImagen.PostedFile.FileName != "") //cuando se edita, te borra. pero la imagen esta si
                 string defaultImageUrl = "https://www.palomacornejo.com/wp-content/uploads/2021/08/no-image.jpg";
-                if (imgArticulo.ImageUrl != defaultImageUrl)
+
+                // Verifica si se subió un nuevo archivo de imagen
+                if (txtImagen.PostedFile != null && txtImagen.PostedFile.ContentLength > 0)
                 {
                     string ruta = Server.MapPath("./Images/");
                     string imagenFinal = "articulo-" + articulo.Id + ".jpg";
+                    string rutaArchivoExistente = Path.Combine(ruta, imagenFinal);
 
-                    //txtImagen.PostedFile.SaveAs(ruta + imagenFinal);    //copia una imagen que no esta. tiene que copiar del otro!!!!
+                    // Si existe una imagen con el mismo nombre, elimínala
+                    if (File.Exists(rutaArchivoExistente))
+                    {
+                        File.Delete(rutaArchivoExistente);
+                    }
 
+                    // Guarda la nueva imagen
+                    txtImagen.PostedFile.SaveAs(rutaArchivoExistente);
+
+                    // Actualiza la URL de la imagen del artículo
                     articulo.ImagenUrl = imagenFinal;
-
-                    txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
-                    //negocio.ActualizarImagenArticulo(articulo.Id, imagenFinal); //no actualiza todos los demas campos.
                 }
                 else
                 {
-                    articulo.ImagenUrl = "";
+                    // Si no se subió una nueva imagen
+                    if (imgArticulo.ImageUrl != defaultImageUrl)
+                    {
+                        // Mantén la URL de la imagen actual del artículo
+                        //articulo.ImagenUrl = imgArticulo.ImageUrl;
+                    }
+                    else
+                    {
+                        // Si la imagen actual es la imagen por defecto, asigna un valor vacío o una imagen por defecto
+                        articulo.ImagenUrl = "";
+                    }
                 }
+
                 negocio.EditarArticulo(articulo);
             }
 

@@ -224,7 +224,7 @@
                 }
     </style>
 
-        <script type="text/javascript">
+        <%--<script type="text/javascript">
             function isNumber(event) {
                 var charCode = event.which ? event.which : event.keyCode;
                 if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -241,7 +241,77 @@
                 value = parseInt(value); // Convertir a número entero
                 element.value = value.toLocaleString('en-US'); // Formatear con separadores de miles
             }
-        </script>
+        </script>--%>
+
+    <%--<script type="text/javascript">
+        function isNumber(event) {
+            var charCode = event.which ? event.which : event.keyCode;
+            // Permite números y comas
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 44) {
+                return false;
+            }
+            return true;
+        }
+
+        function formatPrice(element) {
+            var value = element.value.replace(/\./g, '').replace(/,/g, '.'); // Remover puntos y convertir comas en puntos
+            if (value === '') {
+                return;
+            }
+
+            var numericValue = parseFloat(value); // Convertir a número decimal
+
+            if (isNaN(numericValue)) {
+                return; // Manejar el caso en que el valor no es numérico
+            }
+
+            // Formatear el número con puntos como separadores de miles y comas como separadores decimales
+            var formattedValue = numericValue.toLocaleString('es-ES', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).replace(/,/g, '.'); // Reemplazar la coma decimal por un punto decimal
+
+            element.value = formattedValue;
+        }
+</script>--%>
+
+    <script type="text/javascript">
+        function isNumber(event) {
+            var charCode = event.which ? event.which : event.keyCode;
+            // Permite números y puntos
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                return false;
+            }
+            return true;
+        }
+
+        function formatPrice(element) {
+            // Remover cualquier punto existente y reemplazar comas por puntos
+            var value = element.value.replace(/,/g, '').replace(/(\..*)\./g, '$1'); // Convertir comas en puntos y manejar múltiples puntos
+            if (value === '') {
+                return;
+            }
+
+            var numericValue = parseFloat(value); // Convertir a número decimal
+
+            if (isNaN(numericValue)) {
+                return; // Manejar el caso en que el valor no es numérico
+            }
+
+            // Formatear el número con puntos como separadores de miles y punto como separador decimal
+            var formattedValue = numericValue.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }); // El formato 'en-US' usa el punto como separador decimal
+
+            element.value = formattedValue;
+        }
+    </script>
+
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">

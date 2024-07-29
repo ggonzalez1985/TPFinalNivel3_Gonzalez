@@ -239,9 +239,10 @@ namespace Catalogo_Web
             }
         }
 
-        protected void dgvArticulos_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
+       
 
+        protected void dgvArticulos_RowDeleting1(object sender, GridViewDeleteEventArgs e)
+        {
             ArticulosNegocio negocio = new ArticulosNegocio();
             ArticulosNegocio articulosNegocio = new ArticulosNegocio();
 
@@ -265,14 +266,20 @@ namespace Catalogo_Web
                     Response.Redirect("Error.aspx");
                 }
 
+                if (bandera)
+                {
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "deleteMessage",
+                    $"Swal.fire('Eliminado!', 'Se eliminó el registro con Id {id}', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Articulos.aspx'; }} }});", true);
+
+                }
+
 
             }
             catch (Exception)
             {
                 throw;
             }
-
-
         }
     }
 
