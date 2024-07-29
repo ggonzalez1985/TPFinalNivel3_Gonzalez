@@ -80,6 +80,7 @@
     <Content Include="Images\PerfilGral.jpg" />
     <Content Include="Images\SinCuenta.jpg" />
     <Content Include="Login.aspx" />
+    <Content Include="Marcas.aspx" />
     <Content Include="Micuenta.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -142,6 +143,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Marcas.aspx.cs">
+      <DependentUpon>Marcas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Marcas.aspx.designer.cs">
+      <DependentUpon>Marcas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Micuenta.aspx.cs">
       <DependentUpon>Micuenta.aspx</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Categorias" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Categorias.aspx.cs" Inherits="Catalogo_Web.Categorias" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -13,8 +14,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
- 
-   <%-- <script>    
+    <script type="text/javascript">
+        var object = { status: false, ele: null };
+        function conFunction(ev) {
+            var evnt = ev;
+            if (object.status) { return true; }
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "¡No podrá recuperar esta categoria!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "¡Sí, elimínelo!",
+                closeOnConfirm: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    object.status = true;
+                    object.ele = evnt;
+                    evnt.click();
+                }
+            })
+
+            return object.status;
+        };
+    </script>
+
+    <script>    
         function validarCampos() {
             var descripcion = document.getElementById('<%= txtDescripcion.ClientID %>');
             var isValid = true;
@@ -31,20 +57,19 @@
             return isValid; // Solo se enviará el formulario si isValid es true
         }
 
-    </script>--%>
+    </script>
 
-    <style> 
+    <style>
         .is-valid {
-    border-color: #28a745;
-}
+            border-color: #28a745;
+        }
 
-.is-invalid {
-    border-color: #dc3545;
-}
-
+        .is-invalid {
+            border-color: #dc3545;
+        }
     </style>
 
-\
+    \
     <style>
         .custom-container {
             max-width: 100%;
@@ -63,47 +88,41 @@
             width: 100%;
         }
     </style>
- 
-   <style>
-    #<%= txtFiltro.ClientID %>::placeholder { /* Modern browsers */
-        color: blue;
-    }
-    </style>
-    <style> 
 
+
+    <style>
         .group-box {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
-}
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
 
-.group-box-header {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-}
+        .group-box-header {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
 
-.group-box-header h4 {
-    margin: 0;
-}
+            .group-box-header h4 {
+                margin: 0;
+            }
 
-.group-box-body {
-    padding: 10px;
-}
-
+        .group-box-body {
+            padding: 10px;
+        }
     </style>
 
 
-    <style> 
+    <style>
         .btn-inline {
-    display: inline-block;
-}
+            display: inline-block;
+        }
 
-.btn-margin-left {
-    margin-left: 20px; /* Aumenta este valor para más espacio */
-}
+        .btn-margin-left {
+            margin-left: 20px; /* Aumenta este valor para más espacio */
+        }
     </style>
 
 
@@ -111,52 +130,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="body" runat="server">
-    
-
-    <div class="container-fluid" style="background-color: #000;">
-
-        <div class="row justify-content-center">
-            <div class="col-6 ">
-                <form class="card card-sm" style="background-color: #000; color: #fff; border-color: #fff;">
-                    <div class="card-body row no-gutters align-items-center">
-                        <div class="col-auto">
-                            <i class="fas fa-search h4 text-body"></i>
-                        </div>
-                        <div class="col">
-                            <asp:TextBox runat="server" ID="txtFiltro" AutoPostBack="true" OnTextChanged="txtFiltro_TextChanged" 
-                            class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search..." 
-                            Style="color: blue; background-color: #000;" />
-                        </div>
-
-                        <div class="col-auto">
-                            <asp:Button runat="server" ID="btnReset" Text="🔄" OnClick="btnReset_Click1" class="btn btn-lg btn-outline-light"
-                                Style="color: white; background-color: black; border-style: none; margin-left: -86px; border-width: 0;" />
-                        </div>
-                    </div>
-                    <br />
-                </form>
-            </div>
-            <div class="col-2 ">
-
-            </div>
-
-        </div>
-
-     
-
-    </div>
-
-
 
     <div class="container custom-container">
 
         <br />
-        
+
         <div class="row">
 
             <div class="col-2">
 
-                 <asp:Panel ID="pnlResultados" runat="server" CssClass="group-box">
+                <asp:Panel ID="pnlResultados" runat="server" CssClass="group-box">
                     <div class="group-box-header">
                         <h4>Resultados</h4>
                     </div>
@@ -173,36 +156,28 @@
                                 <asp:Label ID="lblRegistros" runat="server" CssClass="form-label fs-5" />
                             </div>
                         </div>
-                        </div>
-                            </asp:Panel>
-
-
-       
+                    </div>
+                </asp:Panel>
 
                 <asp:Panel ID="pnlBotones" runat="server" CssClass="group-box">
-    <div class="group-box-header">
-        <h4>Acciones</h4>
-    </div>
-    <div class="group-box-body">
-        <div class="mb-3">
-            <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" 
-                >➕ Nuevo</asp:LinkButton>
-            <br /><br />
+                    <div class="group-box-header">
+                        <h4>Acciones</h4>
+                    </div>
+                    <div class="group-box-body">
+                        <div class="mb-3">
+                            <asp:LinkButton ID="lnkNuevoArticulo" runat="server" CssClass="btn btn-dark text-white" OnClick="lnkNuevoArticulo_Click">➕ Nuevo</asp:LinkButton>
+                            <br />
+                            <br />
 
-            <div >
-                <label for="txtDescripcion" class="form-label">Descripción</label>
-                <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control mb-3" TextMode="MultiLine" Rows="2"></asp:TextBox>
-                
-           
+                            <div>
+                                <label for="txtDescripcion" class="form-label">Descripción</label>
+                                <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control mb-3" TextMode="MultiLine" Rows="2" Enabled="false"></asp:TextBox>
 
-                    <asp:LinkButton ID="lnkAceptar" runat="server" Text="Guardar" CssClass="btn btn-primary btn-inline small-button" 
-                        OnClick="lnkAceptar_Click1" />
-
-             
-            </div>
-        </div>
-    </div>
-</asp:Panel>
+                                <asp:LinkButton ID="lnkGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary btn-inline small-button" OnClientClick="return validarCampos();" OnClick="lnkGuardar_Click" Enabled="false" />
+                            </div>
+                        </div>
+                    </div>
+                </asp:Panel>
 
 
 
@@ -212,52 +187,56 @@
             <div class="col">
 
                 <ul class="nav nav-tabs">
-                <li class="nav-item">
-                 <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Listado de Categorias</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: white; background-color: black; border: 2px black; border-bottom-color: black;" aria-current="page">Listado de Categorias</a>
+                    </li>
                 </ul>
 
                 <br />
 
 
+                <asp:GridView ID="dgvCategoriass" DataKeyNames="Id" 
+                    OnRowEditing="dgvCategoriass_RowEditing" 
+                    OnRowCancelingEdit="dgvCategoriass_RowCancelingEdit" 
+                    OnRowDeleting="dgvCategoriass_RowDeleting" 
+                    OnRowUpdating="dgvCategoriass_RowUpdating"
+                    CssClass="table" AutoGenerateColumns="False" runat="server">
 
-                <asp:GridView ID="dgvCategorias" DataKeyNames="Id" CssClass="table" AutoGenerateColumns="false" runat="server">
                     <Columns>
+
                         <asp:BoundField HeaderText="Id" DataField="Id" />
-                        <asp:BoundField HeaderText="Descripcion" DataField="Descripcion" />
-                        
-                        
-                        <asp:TemplateField HeaderText="Editar">
-                        <ItemTemplate>
-                            <asp:LinkButton ID="lnkEditar" runat="server" CssClass="btn btn-dark text-white" 
-                                CommandName="Edit" CommandArgument='<%# Eval("Id") %>'>📝</asp:LinkButton>
-                        </ItemTemplate>
-                    </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Descripcion">
+                            <EditItemTemplate>
+                                <asp:TextBox ID="txtDescripcion" runat="server" Text='<%# Bind("Descripcion") %>'></asp:TextBox>
+                            </EditItemTemplate>
+                            <ItemTemplate>
+                                <asp:Label ID="lblDescripcion" runat="server" Text='<%# Bind("Descripcion") %>'></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Eliminar">
-                    <ItemTemplate>
-                        <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-danger text-white" Text="🗑️" 
-                        OnClientClick="return conFunction(this);" />
-                    </ItemTemplate>
-                </asp:TemplateField>
+                        <asp:CommandField ShowEditButton="true" HeaderText="Edicion" ControlStyle-CssClass="btn btn-primary" />
 
-
+                        <asp:TemplateField HeaderText="Accion">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-secondary text-white" 
+                                    Text="🗑️" OnClientClick="return conFunction(this);" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
 
                     </Columns>
+
+
                 </asp:GridView>
 
-                
 
             </div>
-
-            
 
 
         </div>
     </div>
 
 
-    
+
 
 
 </asp:Content>

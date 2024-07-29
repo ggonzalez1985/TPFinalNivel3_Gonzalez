@@ -11,7 +11,7 @@ namespace Catalogo_Web
 {
 
 
-    public partial class Categorias
+    public partial class Marcas
     {
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.Panel pnlBotones;
 
         /// <summary>
-        /// Control lnkNuevoArticulo.
+        /// Control lnkNuevaMarca.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkNuevoArticulo;
+        protected global::System.Web.UI.WebControls.LinkButton lnkNuevaMarca;
 
         /// <summary>
         /// Control txtDescripcion.
@@ -94,14 +94,5 @@ namespace Catalogo_Web
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkGuardar;
-
-        /// <summary>
-        /// Control dgvCategoriass.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView dgvCategoriass;
     }
 }

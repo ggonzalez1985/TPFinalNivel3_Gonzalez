@@ -27,10 +27,10 @@ namespace Catalogo_Web
                     {
                         Session["listaCategorias"] = ListaCategorias;
 
-                        dgvCategorias.DataSource = ListaCategorias;
-                        dgvCategorias.DataBind();
+                        dgvCategoriass.DataSource = ListaCategorias;
+                        dgvCategoriass.DataBind();
 
-                        //reiniciaControles();
+                        reiniciaControles();
                     }
                     else
                     {
@@ -42,13 +42,14 @@ namespace Catalogo_Web
                 else
                 {
 
-                    //ListaCategorias = Session["listaCategorias"] as List<Categoria>;
+                    ListaCategorias = Session["listaCategorias"] as List<Categoria>;
+                    reiniciaControles() ;
 
-                    //if (ListaCategorias == null)
-                    //{
-                    //    Session.Add("error", new Exception("No se encontraron categorias en la sesión."));
-                    //    Response.Redirect("Error.aspx");
-                    //}
+                    if (ListaCategorias == null)
+                    {
+                        Session.Add("error", new Exception("No se encontraron categorias en la sesión."));
+                        Response.Redirect("Error.aspx");
+                    }
 
                 }
 
@@ -62,21 +63,19 @@ namespace Catalogo_Web
 
         private void reiniciaControles()
         {
-            //CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-            //List<Categoria> listaCategorias = categoriaNegocio.listar();
-            //Session["listaCategorias"] = listaCategorias;
+            CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+            List<Categoria> listaCategorias = categoriaNegocio.listar();
+            Session["listaCategorias"] = listaCategorias;
 
-            //txtFiltro.Text = "";
-
-            //lblResultados.Text = listaCategorias.Count.ToString();
-            //lblRegistros.Text = "-";
+            lblResultados.Text = listaCategorias.Count.ToString();
+            lblRegistros.Text = "-";
 
         }
 
 
         protected void txtFiltro_TextChanged(object sender, EventArgs e)
         {
-            string filtro = txtFiltro.Text.ToUpper();
+            string filtro = "a"; //txtFiltro.Text.ToUpper();
 
             if (string.IsNullOrWhiteSpace(filtro))
             {
@@ -94,10 +93,9 @@ namespace Catalogo_Web
                 }
 
                 lblResultados.Text = ListaCategorias == null ? "-" : ListaCategorias.Count.ToString();
-                lblRegistros.Text = txtFiltro.Text;
 
-                dgvCategorias.DataSource = ListaCategorias;
-                dgvCategorias.DataBind();
+                dgvCategoriass.DataSource = ListaCategorias;
+                dgvCategoriass.DataBind();
 
             }
         }
@@ -105,20 +103,27 @@ namespace Catalogo_Web
         protected void btnReset_Click1(object sender, EventArgs e)
         {
             ListaCategorias = new List<Categoria>(ListaCategorias);
-            dgvCategorias.DataSource = ListaCategorias;
-            dgvCategorias.DataBind();
+            dgvCategoriass.DataSource = ListaCategorias;
+            dgvCategoriass.DataBind();
             reiniciaControles();
         }
 
-
-       
-        protected void lnkAceptar_Click1(object sender, EventArgs e)
+        protected void lnkNuevoArticulo_Click(object sender, EventArgs e)
         {
+            // Habilitar el TextBox y el LinkButton para ingresar y guardar la nueva descripción
+            txtDescripcion.Enabled = true;
+            lnkGuardar.Enabled = true;
 
+            // Limpiar el contenido del TextBox
+            txtDescripcion.Text = string.Empty;
+        }
+
+        protected void lnkGuardar_Click(object sender, EventArgs e)
+        {
             try
             {
                 // Obtener el valor del campo de texto
-                string descripcion = txtDescripcion.Text; //TODO: ver porque puta el campo viene vacio?!
+                string descripcion = txtDescripcion.Text;
 
                 // Verificar si el campo está vacío
                 if (string.IsNullOrEmpty(descripcion))
@@ -138,6 +143,18 @@ namespace Catalogo_Web
                         // Mostrar un mensaje de éxito con SweetAlert
                         string script = "Swal.fire({ icon: 'success', title: 'Éxito', text: 'Categoría guardada con éxito.' });";
                         ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess", script, true);
+
+                        // Recargar los datos y actualizar el GridView
+                        ListaCategorias = negocio.listar();
+                        dgvCategoriass.DataSource = ListaCategorias;
+                        dgvCategoriass.DataBind();
+
+                        reiniciaControles();
+
+                        // Limpiar y deshabilitar los controles después de guardar
+                        txtDescripcion.Text = string.Empty;
+                        txtDescripcion.Enabled = false;
+                        lnkGuardar.Enabled = false;
                     }
                     else
                     {
@@ -147,13 +164,112 @@ namespace Catalogo_Web
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
+            }
+        }
+
+        protected void dgvCategoriass_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            CategoriaNegocio negocio = new CategoriaNegocio();
+
+            dgvCategoriass.EditIndex = e.NewEditIndex;
+
+            ListaCategorias = negocio.listar();
+            dgvCategoriass.DataSource = ListaCategorias;
+            dgvCategoriass.DataBind();
+        }
+
+        protected void dgvCategoriass_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+        {
+            Cargar();
+        }
+
+        private void Cargar()
+        {
+            CategoriaNegocio negocio = new CategoriaNegocio();
+            dgvCategoriass.EditIndex = -1;
+            CargaDatos(negocio);
+        }
+
+        private void CargaDatos(CategoriaNegocio negocio)
+        {
+            ListaCategorias = negocio.listar();
+            dgvCategoriass.DataSource = ListaCategorias;
+            dgvCategoriass.DataBind();
+        }
+
+        protected void dgvCategoriass_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        {
+            try
+            {
+                CategoriaNegocio negocio = new CategoriaNegocio();
+                Categoria categoria = new Categoria();
+
+                int id = Convert.ToInt32(dgvCategoriass.DataKeys[e.RowIndex].Value);
+                string descripcionNueva = (dgvCategoriass.Rows[e.RowIndex].FindControl("txtDescripcion") as TextBox).Text;
+
+                categoria.Id = id;
+                categoria.Descripcion = descripcionNueva;
+
+                bool resultado = negocio.modificar(categoria);
+
+                if (resultado)
+                {
+
+                    // Mostrar un mensaje de éxito con SweetAlert
+                    string script = "Swal.fire({ icon: 'success', title: 'Éxito', text: 'Categoría editada con éxito.' });";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess", script, true);
+                    Cargar();
+
+                }
+                else
+                {
+                    // Mostrar un mensaje de error en caso de fallo en el guardado
+                    string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al guardar la categoría.' });";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
+                }
+
+               
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        protected void dgvCategoriass_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            
+            try
+            {
+                CategoriaNegocio negocio = new CategoriaNegocio();
+                int id = Convert.ToInt32(dgvCategoriass.DataKeys[e.RowIndex].Value);
+                bool bandera = negocio.eliminar(id);
+                CargaDatos(negocio);
+
+                if (bandera)
+                {
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "deleteMessage",
+                    $"Swal.fire('Eliminado!', 'Se eliminó la categoria con Id {id}', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Categorias.aspx'; }} }});", true);
+
+                }
+
+            }
             catch (Exception)
             {
 
                 throw;
             }
 
-            
         }
+
+
+
     }
 }

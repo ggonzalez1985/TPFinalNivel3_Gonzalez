@@ -99,7 +99,7 @@ namespace Negocio
 
         }
 
-        public void modificar(Categoria nuevo)
+        public bool modificar(Categoria nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
             try
@@ -111,6 +111,8 @@ namespace Negocio
                 datos.setearParametro("@id", nuevo.Id);
 
                 datos.ejecutarAccion();
+
+                return true ;
             }
             catch (Exception ex)
             {
@@ -122,6 +124,26 @@ namespace Negocio
             }
         }
 
+        public bool eliminar (int Id)
+        {
+            AccesoDatos datos = new AccesoDatos ();
+            try
+            {
+                datos.setearConsulta("delete from CATEGORIAS where Id = @id");
+                datos.setearParametro("@id", Id);
+                datos.ejecutarAccion();
+                return true;
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
     }
 }
