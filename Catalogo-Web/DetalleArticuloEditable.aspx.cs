@@ -195,7 +195,7 @@ namespace Catalogo_Web
                 Existente = true;
             }
 
-            if (!Existente) //TODO: articulo que se crea nuevo sin imagen, no lo esat guardando!
+            if (!Existente) 
             {
                 if (txtImagen.PostedFile.FileName != "")
                 {

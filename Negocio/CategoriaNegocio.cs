@@ -72,7 +72,7 @@ namespace Negocio
             }
         }
 
-        public void Agregar(Categoria nuevo)
+        public bool Agregar(string descripcion)
         {
             AccesoDatos datos = new AccesoDatos();
 
@@ -80,9 +80,11 @@ namespace Negocio
             {
                 datos.setearConsulta("INSERT INTO CATEGORIAS(Descripcion)VALUES(@descripcion)");
 
-                datos.setearParametro("@descripcion", nuevo.Descripcion);
+                datos.setearParametro("@descripcion", descripcion);
                 
                 datos.ejecutarAccion();
+
+                return true;
 
             }
             catch (Exception)

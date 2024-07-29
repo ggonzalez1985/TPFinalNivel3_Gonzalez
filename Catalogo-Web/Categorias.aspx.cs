@@ -30,7 +30,7 @@ namespace Catalogo_Web
                         dgvCategorias.DataSource = ListaCategorias;
                         dgvCategorias.DataBind();
 
-                        reiniciaControles();
+                        //reiniciaControles();
                     }
                     else
                     {
@@ -42,13 +42,13 @@ namespace Catalogo_Web
                 else
                 {
 
-                    ListaCategorias = Session["listaCategorias"] as List<Categoria>;
+                    //ListaCategorias = Session["listaCategorias"] as List<Categoria>;
 
-                    if (ListaCategorias == null)
-                    {
-                        Session.Add("error", new Exception("No se encontraron categorias en la sesión."));
-                        Response.Redirect("Error.aspx");
-                    }
+                    //if (ListaCategorias == null)
+                    //{
+                    //    Session.Add("error", new Exception("No se encontraron categorias en la sesión."));
+                    //    Response.Redirect("Error.aspx");
+                    //}
 
                 }
 
@@ -62,35 +62,17 @@ namespace Catalogo_Web
 
         private void reiniciaControles()
         {
-            CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
-            List<Categoria> listaCategorias = categoriaNegocio.listar();
-            Session["listaCategorias"] = listaCategorias;
+            //CategoriaNegocio categoriaNegocio = new CategoriaNegocio();
+            //List<Categoria> listaCategorias = categoriaNegocio.listar();
+            //Session["listaCategorias"] = listaCategorias;
 
-            MarcaNegocio marcaNegocio = new MarcaNegocio();
-            List<Marca> listaMarcas = marcaNegocio.listar();
-            Session["listaMarcas"] = listaMarcas;
+            //txtFiltro.Text = "";
 
-            txtFiltro.Text = "";
-
-            lblResultados.Text = listaCategorias.Count.ToString();
-            lblRegistros.Text = "-";
+            //lblResultados.Text = listaCategorias.Count.ToString();
+            //lblRegistros.Text = "-";
 
         }
 
-        protected void LinkButton1_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("DetalleArticuloEditable.aspx");
-        }
-
-        protected void lnkEditar_Click2(object sender, EventArgs e)
-        {
-            LinkButton lnkButton = sender as LinkButton;
-            if (lnkButton != null)
-            {
-                string id = lnkButton.CommandArgument;
-                Response.Redirect("DetalleArticuloEditable.aspx?id=" + id);
-            }
-        }
 
         protected void txtFiltro_TextChanged(object sender, EventArgs e)
         {
@@ -126,6 +108,52 @@ namespace Catalogo_Web
             dgvCategorias.DataSource = ListaCategorias;
             dgvCategorias.DataBind();
             reiniciaControles();
+        }
+
+
+       
+        protected void lnkAceptar_Click1(object sender, EventArgs e)
+        {
+
+            try
+            {
+                // Obtener el valor del campo de texto
+                string descripcion = txtDescripcion.Text; //TODO: ver porque puta el campo viene vacio?!
+
+                // Verificar si el campo está vacío
+                if (string.IsNullOrEmpty(descripcion))
+                {
+                    // Mostrar un mensaje de error con SweetAlert
+                    string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'El campo Descripción es obligatorio.' });";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
+                }
+                else
+                {
+                    // Proceder con la lógica de guardado
+                    CategoriaNegocio negocio = new CategoriaNegocio();
+                    bool resultado = negocio.Agregar(descripcion);
+
+                    if (resultado)
+                    {
+                        // Mostrar un mensaje de éxito con SweetAlert
+                        string script = "Swal.fire({ icon: 'success', title: 'Éxito', text: 'Categoría guardada con éxito.' });";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess", script, true);
+                    }
+                    else
+                    {
+                        // Mostrar un mensaje de error en caso de fallo en el guardado
+                        string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al guardar la categoría.' });";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            
         }
     }
 }
