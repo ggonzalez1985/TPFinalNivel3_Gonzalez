@@ -16,7 +16,7 @@ namespace Catalogo_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
+            try //TODO: seguir desde aca controlando TRY CATCH
             {
 
                 if (!IsPostBack)
@@ -260,7 +260,9 @@ namespace Catalogo_Web
                     if (imgArticulo.ImageUrl != defaultImageUrl)
                     {
                         // Mantén la URL de la imagen actual del artículo
-                        //articulo.ImagenUrl = imgArticulo.ImageUrl;
+                        string ubicacion = imgArticulo.ImageUrl;
+                        string nombreArchivo = ubicacion.Replace("/Images/", "");
+                        articulo.ImagenUrl = nombreArchivo;
                     }
                     else
                     {

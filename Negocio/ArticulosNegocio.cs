@@ -233,13 +233,14 @@ namespace Negocio
 
             try
             {
-                datos.setearConsulta("UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria , Precio = @Precio Where Id = @id");
+                datos.setearConsulta("UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria, ImagenUrl = @ImagenUrl, Precio = @Precio Where Id = @id");
 
                 datos.setearParametro("@Codigo", nuevo.Codigo);
                 datos.setearParametro("@Nombre", nuevo.Nombre);
                 datos.setearParametro("@Descripcion", nuevo.Descripcion);
                 datos.setearParametro("@IdMarca", nuevo.IdMarca.Id);
                 datos.setearParametro("@IdCategoria", nuevo.IdCategoria.Id);
+                datos.setearParametro("@ImagenUrl", nuevo.ImagenUrl);
                 datos.setearParametro("@Precio", nuevo.Precio);
                 datos.setearParametro("@id", nuevo.Id);
 

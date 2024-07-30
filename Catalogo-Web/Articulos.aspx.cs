@@ -11,7 +11,7 @@ namespace Catalogo_Web
 {
     public partial class Articulos : System.Web.UI.Page
     {
-        public List<Articulo> ListaArticulo { get; set; }    
+        public List<Articulo> ListaArticulo { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -37,31 +37,25 @@ namespace Catalogo_Web
 
                 if (!IsPostBack)
                 {
-
-                    // Crear instancia del negocio
                     ArticulosNegocio negocio = new ArticulosNegocio();
 
-                    // Obtener la lista de artículos
                     ListaArticulo = negocio.Listararticulos();
 
-                    // Verificar si se obtuvieron artículos
                     if (ListaArticulo != null)
                     {
-                        // Almacenar la lista de artículos en la sesión
+
                         Session["listaArticulos"] = ListaArticulo;
 
-                        // Asignar la lista al DataSource del GridView y enlazar datos
                         dgvArticulos.DataSource = ListaArticulo;
                         dgvArticulos.DataBind();
 
-                        // Reiniciar controles
                         reiniciaControles();
                     }
                     else
                     {
                         // Si no se encontraron artículos, redirigir a la página de error
-                        Session.Add("error", new Exception("No se encontraron artículos."));
-                        Response.Redirect("Error.aspx");
+                        Session.Add("error", "No se encontraron artículos.");
+                        Response.Redirect("Error.aspx", false);
                     }
 
                 }
@@ -72,8 +66,8 @@ namespace Catalogo_Web
 
                     if (ListaArticulo == null)
                     {
-                        Session.Add("error", new Exception("No se encontraron artículos en la sesión."));
-                        Response.Redirect("Error.aspx");
+                        Session.Add("error", "No se encontraron artículos en la sesión.");
+                        Response.Redirect("Error.aspx", false);
                     }
 
                 }
@@ -82,53 +76,70 @@ namespace Catalogo_Web
             catch (Exception ex)
             {
                 Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
 
         protected void txtFiltro_TextChanged(object sender, EventArgs e)
         {
-            string filtro = txtFiltro.Text.ToUpper();
 
-            if (string.IsNullOrWhiteSpace(filtro))
+            try
             {
-                ListaArticulo = new List<Articulo>(ListaArticulo);
-            }
-            else
-            {
-                List<Articulo> ListaFiltrada = ListaArticulo.FindAll(x => x.Nombre.ToUpper().Contains(filtro));
-                ListaArticulo = ListaFiltrada.Count == 0 ? null : ListaFiltrada;
+                string filtro = txtFiltro.Text.ToUpper();
 
-                // Mostrar mensaje si no se encuentran artículos
-                if (ListaArticulo == null)
+                if (string.IsNullOrWhiteSpace(filtro))
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "noResultsAlert",
-                    "Swal.fire({ title: 'Información', text: 'No se encontraron artículos.', icon: 'info', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Articulos.aspx'; } });", true);
+                    ListaArticulo = new List<Articulo>(ListaArticulo);
                 }
+                else
+                {
+                    List<Articulo> ListaFiltrada = ListaArticulo.FindAll(x => x.Nombre.ToUpper().Contains(filtro));
+                    ListaArticulo = ListaFiltrada.Count == 0 ? null : ListaFiltrada;
 
-                lblResultados.Text = ListaArticulo == null ? "-" : ListaArticulo.Count.ToString();
-                lblRegistros.Text = txtFiltro.Text;
+                    // Mostrar mensaje si no se encuentran artículos
+                    if (ListaArticulo == null)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "noResultsAlert",
+                        "Swal.fire({ title: 'Información', text: 'No se encontraron artículos.', icon: 'info', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Articulos.aspx'; } });", true);
+                    }
 
-                dgvArticulos.DataSource = ListaArticulo;
-                dgvArticulos.DataBind();
+                    lblResultados.Text = ListaArticulo == null ? "-" : ListaArticulo.Count.ToString();
+                    lblRegistros.Text = txtFiltro.Text;
+
+                    dgvArticulos.DataSource = ListaArticulo;
+                    dgvArticulos.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
         }
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-            ListaArticulo = new List<Articulo>(ListaArticulo);
-            dgvArticulos.DataSource = ListaArticulo;
-            dgvArticulos.DataBind();
-            reiniciaControles();
+            try
+            {
+                ListaArticulo = new List<Articulo>(ListaArticulo);
+                dgvArticulos.DataSource = ListaArticulo;
+                dgvArticulos.DataBind();
+                reiniciaControles();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            ArticulosNegocio negocio = new ArticulosNegocio();
-            string CategoriaArticulo = null, MarcaArticulo = null, PrecioMin = null, PrecioMax = null;
-
             try
             {
+                ArticulosNegocio negocio = new ArticulosNegocio();
+                string CategoriaArticulo = null, MarcaArticulo = null, PrecioMin = null, PrecioMax = null;
+
                 if (!validarFiltro())
                     return;
 
@@ -183,10 +194,10 @@ namespace Catalogo_Web
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
             }
         }
 
@@ -258,7 +269,7 @@ namespace Catalogo_Web
             }
         }
 
-       
+
 
         protected void dgvArticulos_RowDeleting1(object sender, GridViewDeleteEventArgs e)
         {
@@ -295,9 +306,10 @@ namespace Catalogo_Web
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
             }
         }
     }

@@ -32,8 +32,8 @@ namespace Catalogo_Web
                     }
                     else
                     {
-                        Session.Add("error", new Exception("No se encontraron artículos."));
-                        Response.Redirect("Error.aspx");
+                        Session.Add("error", "No se encontraron artículos.");
+                        Response.Redirect("Error.aspx", false);
                     }
 
                     if (Session["Usuario"] != null)
@@ -56,8 +56,8 @@ namespace Catalogo_Web
 
                     if (ListaArticulo == null)
                     {
-                        Session.Add("error", new Exception("No se encontraron artículos en la sesión."));
-                        Response.Redirect("Error.aspx");
+                        Session.Add("error", "No se encontraron artículos en la sesión.");
+                        Response.Redirect("Error.aspx", false);
                     }
                 }
 
@@ -65,7 +65,7 @@ namespace Catalogo_Web
             catch (Exception ex)
             {
                 Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
 
@@ -76,26 +76,34 @@ namespace Catalogo_Web
 
         protected void txtFiltro_TextChanged(object sender, EventArgs e)
         {
-            string filtro = txtFiltro.Text.ToUpper();
-
-            if (string.IsNullOrWhiteSpace(filtro))
+            try
             {
-                ListaArticulo = new List<Articulo>(ListaArticulo);
-            }
-            else
-            {
-                List<Articulo> ListaFiltrada = ListaArticulo.FindAll(x => x.Nombre.ToUpper().Contains(filtro));
-                ListaArticulo = ListaFiltrada.Count == 0 ? null : ListaFiltrada;
+                string filtro = txtFiltro.Text.ToUpper();
 
-                // Mostrar mensaje si no se encuentran artículos
-                if (ListaArticulo == null)
+                if (string.IsNullOrWhiteSpace(filtro))
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "noResultsAlert",
-                    "Swal.fire({ title: 'Información', text: 'No se encontraron artículos.', icon: 'info', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Catalogo.aspx'; } });", true);
+                    ListaArticulo = new List<Articulo>(ListaArticulo);
                 }
+                else
+                {
+                    List<Articulo> ListaFiltrada = ListaArticulo.FindAll(x => x.Nombre.ToUpper().Contains(filtro));
+                    ListaArticulo = ListaFiltrada.Count == 0 ? null : ListaFiltrada;
 
-                lblResultados.Text = ListaArticulo == null ? "-" : ListaArticulo.Count.ToString();
-                lblRegistros.Text = txtFiltro.Text;
+                    // Mostrar mensaje si no se encuentran artículos
+                    if (ListaArticulo == null)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "noResultsAlert",
+                        "Swal.fire({ title: 'Información', text: 'No se encontraron artículos.', icon: 'info', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Catalogo.aspx'; } });", true);
+                    }
+
+                    lblResultados.Text = ListaArticulo == null ? "-" : ListaArticulo.Count.ToString();
+                    lblRegistros.Text = txtFiltro.Text;
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
         }
 
@@ -184,7 +192,6 @@ namespace Catalogo_Web
                             lblRegistros.Text = DdlMarcas.SelectedItem.ToString();
                         }
                     }
-
                 }
                 else
                 {
@@ -193,13 +200,11 @@ namespace Catalogo_Web
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
-
-
         }
 
         private bool validarFiltro()
