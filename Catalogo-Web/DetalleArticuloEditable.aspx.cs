@@ -94,7 +94,7 @@ namespace Catalogo_Web
             catch (Exception ex)
             {
                 Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
 
@@ -112,7 +112,8 @@ namespace Catalogo_Web
             }
             catch (Exception ex)
             {
-                Session.Add("error", ex.ToString());
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
 
         }
@@ -191,11 +192,11 @@ namespace Catalogo_Web
             if (!string.IsNullOrEmpty(txtId.Text.Trim()))
             {
                 articulo.Id = int.Parse(txtId.Text);
-                if(articulo.Id != 0)
-                Existente = true;
+                if (articulo.Id != 0)
+                    Existente = true;
             }
 
-            if (!Existente) 
+            if (!Existente)
             {
                 if (txtImagen.PostedFile.FileName != "")
                 {
@@ -270,12 +271,9 @@ namespace Catalogo_Web
                         articulo.ImagenUrl = "";
                     }
                 }
-
                 negocio.EditarArticulo(articulo);
             }
-
             return true;
-
         }
 
 
@@ -284,7 +282,6 @@ namespace Catalogo_Web
         {
             try
             {
-                //EliminarArticulo();
                 ArticulosNegocio negocio = new ArticulosNegocio();
                 bool resultado;
                 resultado = negocio.Eliminar(int.Parse(txtId.Text));
@@ -294,8 +291,6 @@ namespace Catalogo_Web
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "successMessage",
                     "Swal.fire({ title: 'Eliminado', text: 'El artículo ha sido eliminado.', icon: 'success', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'articulos.aspx'; } });", true);
                 }
-
-
             }
             catch (Exception ex)
             {

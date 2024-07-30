@@ -76,7 +76,7 @@ namespace Catalogo_Web
             catch (Exception ex)
             {
                 Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
 
@@ -88,53 +88,13 @@ namespace Catalogo_Web
 
             lblResultados.Text = ListaMarcas.Count.ToString();
             lblRegistros.Text = "-";
-
         }
-
-
-        //protected void txtFiltro_TextChanged(object sender, EventArgs e)
-        //{
-        //    string filtro = "a"; //txtFiltro.Text.ToUpper();
-
-        //    if (string.IsNullOrWhiteSpace(filtro))
-        //    {
-        //        ListaMarcas = new List<Categoria>(ListaMarcas);
-        //    }
-        //    else
-        //    {
-        //        List<Categoria> ListaFiltrada = ListaMarcas.FindAll(x => x.Descripcion.ToUpper().Contains(filtro));
-        //        ListaMarcas = ListaFiltrada.Count == 0 ? null : ListaFiltrada;
-
-        //        if (ListaMarcas == null)
-        //        {
-        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "noResultsAlert",
-        //            "Swal.fire({ title: 'Información', text: 'No se encontraron categorias.', icon: 'info', confirmButtonText: 'OK' }).then((result) => { if (result.isConfirmed) { window.location.href = 'Categorias.aspx'; } });", true);
-        //        }
-
-        //        lblResultados.Text = ListaMarcas == null ? "-" : ListaMarcas.Count.ToString();
-
-        //        dgvMarcass.DataSource = ListaMarcas;
-        //        dgvMarcass.DataBind();
-
-        //    }
-        //}
-
-        //protected void btnReset_Click1(object sender, EventArgs e)
-        //{
-        //    ListaMarcas = new List<Categoria>(ListaMarcas);
-        //    dgvMarcass.DataSource = ListaMarcas;
-        //    dgvMarcass.DataBind();
-        //    reiniciaControles();
-        //}
 
         protected void lnkNuevoArticulo_Click(object sender, EventArgs e)
         {
-            // Habilitar el TextBox y el LinkButton para ingresar y guardar la nueva descripción
             txtDescripcion.Enabled = true;
             lnkGuardar.Enabled = true;
             lnkCancelar.Enabled = true;
-
-            // Limpiar el contenido del TextBox
             txtDescripcion.Text = string.Empty;
         }
 
@@ -142,19 +102,15 @@ namespace Catalogo_Web
         {
             try
             {
-                // Obtener el valor del campo de texto
                 string descripcion = txtDescripcion.Text;
 
-                // Verificar si el campo está vacío
                 if (string.IsNullOrEmpty(descripcion))
                 {
-                    // Mostrar un mensaje de error con SweetAlert
                     string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'El campo Descripción es obligatorio.' });";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
                 }
                 else
                 {
-                    // Proceder con la lógica de guardado
                     MarcaNegocio negocio = new MarcaNegocio();
                     Marca marca = new Marca();
                     marca.Descripcion = descripcion;
@@ -199,40 +155,74 @@ namespace Catalogo_Web
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones
                 Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
 
         protected void dgvMarcass_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            MarcaNegocio negocio = new MarcaNegocio();
 
-            dgvMarcass.EditIndex = e.NewEditIndex;
+            try
+            {
+                MarcaNegocio negocio = new MarcaNegocio();
 
-            ListaMarcas = negocio.listar();
-            dgvMarcass.DataSource = ListaMarcas;
-            dgvMarcass.DataBind();
+                dgvMarcass.EditIndex = e.NewEditIndex;
+                ListaMarcas = negocio.listar();
+                dgvMarcass.DataSource = ListaMarcas;
+                dgvMarcass.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
         protected void dgvMarcass_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
-            Cargar();
+            try
+            {
+                Cargar();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
         }
 
         private void Cargar()
         {
-            MarcaNegocio negocio = new MarcaNegocio();
-            dgvMarcass.EditIndex = -1;
-            CargaDatos(negocio);
+            try
+            {
+                MarcaNegocio negocio = new MarcaNegocio();
+                dgvMarcass.EditIndex = -1;
+                CargaDatos(negocio);
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
         }
 
         private void CargaDatos(MarcaNegocio negocio)
         {
-            ListaMarcas = negocio.listar();
-            dgvMarcass.DataSource = ListaMarcas;
-            dgvMarcass.DataBind();
+            try
+            {
+                ListaMarcas = negocio.listar();
+                dgvMarcass.DataSource = ListaMarcas;
+                dgvMarcass.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
         }
 
         protected void dgvMarcass_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -252,23 +242,22 @@ namespace Catalogo_Web
 
                 if (resultado)
                 {
-                    // Mostrar un mensaje de éxito con SweetAlert
                     string script = "Swal.fire({ icon: 'success', title: 'Éxito', text: 'Categoría editada con éxito.' });";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess", script, true);
                     Cargar();
                 }
                 else
                 {
-                    // Mostrar un mensaje de error en caso de fallo en el guardado
                     string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al guardar la categoría.' });";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
                 }
                 // }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
 
         }
@@ -292,10 +281,10 @@ namespace Catalogo_Web
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
 
         }

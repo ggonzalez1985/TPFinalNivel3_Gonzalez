@@ -16,7 +16,6 @@ namespace Catalogo_Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             try
             {
                 if (!IsPostBack)
@@ -26,11 +25,7 @@ namespace Catalogo_Web
                     if (Session["Usuario"] != null)
                     {
                         int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
-
-                        // Obtener la lista de IDs de artículos favoritos del usuario desde la base de datos
                         List<int> idsArticulosFavoritos = negocio.ObtenerFavoritos(userId);
-
-                        // Obtener los artículos correspondientes a los IDs
                         ListaArticulo = negocio.ObtenerArticulosPorIds(idsArticulosFavoritos);
 
                         if (idsArticulosFavoritos.Count == 0)
@@ -49,27 +44,14 @@ namespace Catalogo_Web
                             lblResultados.Text = ListaArticulo.Count.ToString();
                             lblRegistros.Text = "Favoritos";
                         }
-                        
-
                     }
-                    else
-                    {
-                        // Manejar el caso donde no hay usuario autenticado
-                    }
-
-                    
-
-                }
-                else
-                {
-                    // Manejar el postback si es necesario
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
-
         }
 
         protected void btnReset_Click(object sender, EventArgs e)

@@ -73,7 +73,8 @@ namespace Catalogo_Web
             }
             catch (Exception ex)
             {
-                Session.Add("error", ex.ToString());
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
             }
 
         }

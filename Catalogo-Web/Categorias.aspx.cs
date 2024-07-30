@@ -209,21 +209,47 @@ namespace Catalogo_Web
 
         protected void dgvCategoriass_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
-            Cargar();
+            try
+            {
+                Cargar();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
         }
 
         private void Cargar()
         {
-            CategoriaNegocio negocio = new CategoriaNegocio();
-            dgvCategoriass.EditIndex = -1;
-            CargaDatos(negocio);
+            try
+            {
+                CategoriaNegocio negocio = new CategoriaNegocio();
+                dgvCategoriass.EditIndex = -1;
+                CargaDatos(negocio);
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
         }
 
         private void CargaDatos(CategoriaNegocio negocio)
         {
-            ListaCategorias = negocio.listar();
-            dgvCategoriass.DataSource = ListaCategorias;
-            dgvCategoriass.DataBind();
+            try
+            {
+                ListaCategorias = negocio.listar();
+                dgvCategoriass.DataSource = ListaCategorias;
+                dgvCategoriass.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
 
         protected void dgvCategoriass_RowUpdating(object sender, GridViewUpdateEventArgs e)
@@ -277,7 +303,6 @@ namespace Catalogo_Web
                     $"Swal.fire('Eliminado!', 'Se eliminó la categoria con Id {id}', 'success').then((result) => {{ if (result.isConfirmed) {{ window.location.href = 'Categorias.aspx'; }} }});", true);
 
                 }
-
             }
             catch (Exception ex)
             {
@@ -298,7 +323,7 @@ namespace Catalogo_Web
             {
                 Session.Add("error", ex);
                 Response.Redirect("Error.aspx", false);
-            }  
+            }
         }
     }
 }
