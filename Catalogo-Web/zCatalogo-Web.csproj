@@ -71,6 +71,7 @@
     <Content Include="Default.aspx" />
     <Content Include="DetalleArticulo.aspx" />
     <Content Include="DetalleArticuloEditable.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="Favoritos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Images\BraviaFondo.jpg" />
@@ -126,6 +127,13 @@
     </Compile>
     <Compile Include="DetalleArticuloEditable.aspx.designer.cs">
       <DependentUpon>DetalleArticuloEditable.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Favoritos.aspx.cs">
       <DependentUpon>Favoritos.aspx</DependentUpon>

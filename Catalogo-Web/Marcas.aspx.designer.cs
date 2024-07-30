@@ -69,13 +69,13 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.Panel pnlBotones;
 
         /// <summary>
-        /// Control lnkNuevaMarca.
+        /// Control lnkNuevoArticulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkNuevaMarca;
+        protected global::System.Web.UI.WebControls.LinkButton lnkNuevoArticulo;
 
         /// <summary>
         /// Control txtDescripcion.
@@ -94,5 +94,23 @@ namespace Catalogo_Web
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkGuardar;
+
+        /// <summary>
+        /// Control lnkCancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkCancelar;
+
+        /// <summary>
+        /// Control dgvMarcass.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView dgvMarcass;
     }
 }

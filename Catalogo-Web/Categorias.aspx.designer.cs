@@ -96,6 +96,15 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.LinkButton lnkGuardar;
 
         /// <summary>
+        /// Control lnkCancelar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkCancelar;
+
+        /// <summary>
         /// Control dgvCategoriass.
         /// </summary>
         /// <remarks>

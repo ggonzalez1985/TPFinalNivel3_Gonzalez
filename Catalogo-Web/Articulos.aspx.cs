@@ -16,6 +16,25 @@ namespace Catalogo_Web
         {
             try
             {
+                if (!Seguridad.esAdmin(Session["Usuario"]))
+                {
+                    Session["error"] = "Se requiere permisos de admin para acceder a esta pantalla";
+                    string script = @"<script type='text/javascript'>
+                        Swal.fire({
+                            title: 'Acceso Denegado',
+                            text: 'Se requiere permisos de admin para acceder a esta pantalla.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = 'Catalogo.aspx';
+                            }
+                        });
+                      </script>";
+                    ClientScript.RegisterStartupScript(this.GetType(), "swalError", script);
+                }
+
                 if (!IsPostBack)
                 {
 

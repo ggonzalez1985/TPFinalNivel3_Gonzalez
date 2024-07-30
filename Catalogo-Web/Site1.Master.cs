@@ -25,7 +25,7 @@ namespace Catalogo_Web
                     imgPerfil.ImageUrl = "~/Images/" + usuario.ImagenUrl;
             }
 
-            if (!(Page is Login || Page is Catalogo || Page is Default || Page is DetalleArticulo || Page is Categorias || Page is Marcas))
+            if (!(Page is Login || Page is Catalogo || Page is Default || Page is DetalleArticulo))
             {
                 if (!Seguridad.sesionActiva(Session["Usuario"]))
                 {

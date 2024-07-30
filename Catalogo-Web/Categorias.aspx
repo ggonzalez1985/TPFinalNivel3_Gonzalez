@@ -125,7 +125,30 @@
         }
     </style>
 
+    <style>
+        /* Clase para botones pequeños */
+        .small-button {
+            padding: 5px 10px; /* Ajusta el padding si es necesario */
+            font-size: 0.875rem; /* Tamaño de fuente más pequeño */
+        }
 
+        /* Clase para el botón de cancelar con margen superior */
+        .btn-cancelar {
+            margin-top: 10px;
+        }
+
+        /* Opcional: Estilo para el botón de guardar */
+        .btn-success {
+            background-color: #28a745; /* Verde más tranquilo */
+            border-color: #28a745;
+        }
+
+        /* Opcional: Estilo para el botón de cancelar */
+        .btn-secondary {
+            background-color: #6c757d; /* Gris más neutro */
+            border-color: #6c757d;
+        }
+    </style>
 
 </asp:Content>
 
@@ -173,7 +196,14 @@
                                 <label for="txtDescripcion" class="form-label">Descripción</label>
                                 <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control mb-3" TextMode="MultiLine" Rows="2" Enabled="false"></asp:TextBox>
 
-                                <asp:LinkButton ID="lnkGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary btn-inline small-button" OnClientClick="return validarCampos();" OnClick="lnkGuardar_Click" Enabled="false" />
+                                <asp:LinkButton ID="lnkGuardar" runat="server" Text="Guardar"
+                                    CssClass="btn btn-success btn-inline small-button"
+                                    OnClientClick="return validarCampos();" OnClick="lnkGuardar_Click" Enabled="false" />
+
+                                <asp:LinkButton ID="lnkCancelar" runat="server" Text="Cancelar"
+                                    CssClass="btn btn-secondary btn-cancelar"
+                                    OnClientClick="" OnClick="lnkCancelar_Click" Enabled="false" />
+
                             </div>
                         </div>
                     </div>
@@ -195,10 +225,10 @@
                 <br />
 
 
-                <asp:GridView ID="dgvCategoriass" DataKeyNames="Id" 
-                    OnRowEditing="dgvCategoriass_RowEditing" 
-                    OnRowCancelingEdit="dgvCategoriass_RowCancelingEdit" 
-                    OnRowDeleting="dgvCategoriass_RowDeleting" 
+                <asp:GridView ID="dgvCategoriass" DataKeyNames="Id"
+                    OnRowEditing="dgvCategoriass_RowEditing"
+                    OnRowCancelingEdit="dgvCategoriass_RowCancelingEdit"
+                    OnRowDeleting="dgvCategoriass_RowDeleting"
                     OnRowUpdating="dgvCategoriass_RowUpdating"
                     CssClass="table" AutoGenerateColumns="False" runat="server">
 
@@ -218,7 +248,7 @@
 
                         <asp:TemplateField HeaderText="Accion">
                             <ItemTemplate>
-                                <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-secondary text-white" 
+                                <asp:LinkButton ID="lnkEliminar" CommandName="Delete" runat="server" CssClass="btn btn-secondary text-white"
                                     Text="🗑️" OnClientClick="return conFunction(this);" />
                             </ItemTemplate>
                         </asp:TemplateField>

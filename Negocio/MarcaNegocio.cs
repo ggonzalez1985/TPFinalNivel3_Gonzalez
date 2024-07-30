@@ -41,7 +41,7 @@ namespace Negocio
             }
         }
 
-        public void modificar(Marca nuevo)
+        public bool modificar(Marca nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
             try
@@ -51,6 +51,7 @@ namespace Negocio
                 datos.setearParametro("@id", nuevo.Id);
 
                 datos.ejecutarAccion();
+                return true;
             }
             catch (Exception ex)
             {
@@ -62,7 +63,35 @@ namespace Negocio
             }
         }
 
-        public void Agregar(Marca nuevo)
+
+        public bool ExisteDescripcion(string descripcion)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                // Consulta para verificar si ya existe la descripción
+                datos.setearConsulta("SELECT COUNT(*) FROM MARCAS WHERE Descripcion = @desc");
+                datos.setearParametro("@desc", descripcion);
+
+                // Ejecutar la consulta y obtener el resultado
+                datos.ejecutarLectura();
+                datos.Lector.Read();
+
+                // Si el conteo es mayor que 0, significa que la descripción ya existe
+                int cantidad = datos.Lector.GetInt32(0);
+                return cantidad > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public bool Agregar(Marca nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
 
@@ -71,6 +100,8 @@ namespace Negocio
                 datos.setearConsulta("INSERT INTO MARCAS(Descripcion)VALUES(@descripcion)");
                 datos.setearParametro("@descripcion", nuevo.Descripcion);
                 datos.ejecutarAccion();
+
+                return true;
 
             }
             catch (Exception)
@@ -85,6 +116,26 @@ namespace Negocio
 
         }
 
+        public bool eliminar(int Id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("delete from MARCAS where Id = @id");
+                datos.setearParametro("@id", Id);
+                datos.ejecutarAccion();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
 
 
     }

@@ -18,6 +18,24 @@ namespace Catalogo_Web
             {
                 if (!IsPostBack)
                 {
+                    if (!Seguridad.esAdmin(Session["Usuario"]))
+                    {
+                        Session["error"] = "Se requiere permisos de admin para acceder a esta pantalla";
+                        string script = @"<script type='text/javascript'>
+                        Swal.fire({
+                            title: 'Acceso Denegado',
+                            text: 'Se requiere permisos de admin para acceder a esta pantalla.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = 'Catalogo.aspx';
+                            }
+                        });
+                      </script>";
+                        ClientScript.RegisterStartupScript(this.GetType(), "swalError", script);
+                    }
 
                     CategoriaNegocio negocio = new CategoriaNegocio();
 
@@ -43,7 +61,7 @@ namespace Catalogo_Web
                 {
 
                     ListaCategorias = Session["listaCategorias"] as List<Categoria>;
-                    reiniciaControles() ;
+                    reiniciaControles();
 
                     if (ListaCategorias == null)
                     {
@@ -113,6 +131,7 @@ namespace Catalogo_Web
             // Habilitar el TextBox y el LinkButton para ingresar y guardar la nueva descripción
             txtDescripcion.Enabled = true;
             lnkGuardar.Enabled = true;
+            lnkCancelar.Enabled = true;
 
             // Limpiar el contenido del TextBox
             txtDescripcion.Text = string.Empty;
@@ -233,7 +252,7 @@ namespace Catalogo_Web
                     ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
                 }
 
-               
+
             }
             catch (Exception)
             {
@@ -244,7 +263,7 @@ namespace Catalogo_Web
 
         protected void dgvCategoriass_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            
+
             try
             {
                 CategoriaNegocio negocio = new CategoriaNegocio();
@@ -269,7 +288,11 @@ namespace Catalogo_Web
 
         }
 
-
-
+        protected void lnkCancelar_Click(object sender, EventArgs e)
+        {
+            txtDescripcion.Text = "";
+            txtDescripcion.Enabled = false;
+            lnkCancelar.Enabled = false;
+        }
     }
 }
