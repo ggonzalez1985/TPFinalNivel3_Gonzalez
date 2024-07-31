@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dominio;
 using System.Web;
+using System.Configuration;
 
 namespace Negocio
 {
