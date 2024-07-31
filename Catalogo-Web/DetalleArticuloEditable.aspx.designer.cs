@@ -60,15 +60,6 @@ namespace Catalogo_Web
         protected global::System.Web.UI.WebControls.DropDownList DdlMarca;
 
         /// <summary>
-        /// Control btnAgregarMarca.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarMarca;
-
-        /// <summary>
         /// Control DdlCategoria.
         /// </summary>
         /// <remarks>
@@ -76,15 +67,6 @@ namespace Catalogo_Web
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DdlCategoria;
-
-        /// <summary>
-        /// Control btnAgregarCategoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarCategoria;
 
         /// <summary>
         /// Control txtPrecio.

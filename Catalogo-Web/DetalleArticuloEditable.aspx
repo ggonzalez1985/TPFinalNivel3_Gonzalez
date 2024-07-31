@@ -364,7 +364,7 @@
                         <label class="form-label">Marca:</label>
                         <asp:DropDownList ID="DdlMarca" CssClass="form-select" Style="width: 100%;" runat="server"></asp:DropDownList>
                     </div>
-                    <asp:Button ID="btnAgregarMarca" Text="+" class="btn btn-primary" runat="server" Style="margin-left: 10px; margin-top: 30px;" />
+                   <%-- <asp:Button ID="btnAgregarMarca" Text="+" class="btn btn-primary" runat="server" Style="margin-left: 10px; margin-top: 30px;" />--%>
                 </div>
 
 
@@ -373,7 +373,7 @@
                         <label class="form-label">Categoria:</label>
                         <asp:DropDownList ID="DdlCategoria" CssClass="form-select" Style="width: 100%;" runat="server"></asp:DropDownList>
                     </div>
-                    <asp:Button ID="btnAgregarCategoria" Text="+" class="btn btn-primary" runat="server" Style="margin-left: 10px; margin-top: 30px;" />
+                    <%--<asp:Button ID="btnAgregarCategoria" Text="+" class="btn btn-primary" runat="server" Style="margin-left: 10px; margin-top: 30px;" />--%>
                 </div>
 
                 <div>
