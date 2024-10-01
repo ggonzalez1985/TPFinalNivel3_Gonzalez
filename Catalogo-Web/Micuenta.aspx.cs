@@ -37,7 +37,7 @@ namespace Catalogo_Web
                     {
                         int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
 
-                        List<int> idsArticulosFavoritos = negocio.ObtenerFavoritos(userId);
+                        List<int> idsArticulosFavoritos = negocio.ObtenerFavoritosSP(userId);
 
                         // Obtener los artículos correspondientes a los IDs
                         ListaFavoritos = negocio.ObtenerArticulosPorIds(idsArticulosFavoritos);

@@ -43,7 +43,7 @@ namespace Catalogo_Web
                 if (id != "" && !IsPostBack)
                 {
                     ArticulosNegocio negocio = new ArticulosNegocio();
-                    Articulo selecccionado = negocio.ListararticuloId(id);
+                    Articulo selecccionado = negocio.ListararticuloIdSP(id);
 
                     if (selecccionado.Id != 0)
                     {
@@ -207,11 +207,11 @@ namespace Catalogo_Web
                     txtImagen.PostedFile.SaveAs(ruta + imagenTemporal);
 
                     articulo.ImagenUrl = imagenTemporal; //articulo-0.jpg
-                    int id = negocio.GuardarConImg(articulo); //aca ya crea el ID
+                    int id = negocio.GuardarConImgSP(articulo); //aca ya crea el ID
 
                     string imagenFinal = "articulo-" + id + ".jpg";
                     txtImagen.PostedFile.SaveAs(ruta + imagenFinal);
-                    negocio.ActualizarImagenArticulo(id, imagenFinal);
+                    negocio.ActualizarImagenArticuloSP(id, imagenFinal);
 
                     Guardado = true;
                 }
@@ -228,7 +228,8 @@ namespace Catalogo_Web
 
                 if (Guardado == false)
                 {
-                    negocio.Guardar(articulo);
+                    //negocio.Guardar(articulo);
+                    negocio.GuardarSP(articulo);
                 }
 
             }
@@ -271,7 +272,7 @@ namespace Catalogo_Web
                         articulo.ImagenUrl = "";
                     }
                 }
-                negocio.EditarArticulo(articulo);
+                negocio.EditarArticuloSP(articulo);
             }
             return true;
         }
@@ -284,7 +285,7 @@ namespace Catalogo_Web
             {
                 ArticulosNegocio negocio = new ArticulosNegocio();
                 bool resultado;
-                resultado = negocio.Eliminar(int.Parse(txtId.Text));
+                resultado = negocio.EliminarSP(int.Parse(txtId.Text));
 
                 if (resultado)
                 {

@@ -51,7 +51,7 @@ namespace Catalogo_Web
                 usuario.Email = txtEmail.Text;
                 usuario.Password = txtPass.Text;
 
-                usuario.Id = usuarioNegocio.NuevoUsuario(usuario);
+                usuario.Id = usuarioNegocio.AgregarUsuarioSP(usuario);
 
                 if (usuario.Id > 0)
                 {

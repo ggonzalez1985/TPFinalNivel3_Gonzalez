@@ -39,7 +39,8 @@ namespace Catalogo_Web
                 {
                     ArticulosNegocio negocio = new ArticulosNegocio();
 
-                    ListaArticulo = negocio.Listararticulos();
+                    //ListaArticulo = negocio.Listararticulos();
+                    ListaArticulo = negocio.ListarArticulosSP();
 
                     if (ListaArticulo != null)
                     {
@@ -279,8 +280,9 @@ namespace Catalogo_Web
             try
             {
                 int id = Convert.ToInt32(dgvArticulos.DataKeys[e.RowIndex].Value);
-                bool bandera = negocio.Eliminar(id);
-                ListaArticulo = negocio.Listararticulos();
+                bool bandera = negocio.EliminarSP(id);
+                //ListaArticulo = negocio.Listararticulos();
+                ListaArticulo = negocio.ListarArticulosSP();
 
                 if (ListaArticulo != null)
                 {

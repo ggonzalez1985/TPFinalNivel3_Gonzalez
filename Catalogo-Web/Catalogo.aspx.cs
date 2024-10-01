@@ -23,7 +23,7 @@ namespace Catalogo_Web
                 if (!IsPostBack)
                 {
                     ArticulosNegocio negocio = new ArticulosNegocio();
-                    ListaArticulo = negocio.Listararticulos();
+                    ListaArticulo = negocio.ListarArticulosSP();
 
                     if (ListaArticulo != null)
                     {
@@ -41,7 +41,7 @@ namespace Catalogo_Web
                         int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
 
                         // Obtener la lista de IDs de artículos favoritos del usuario desde la base de datos
-                        List<int> idsArticulosFavoritos = negocio.ObtenerFavoritos(userId);
+                        List<int> idsArticulosFavoritos = negocio.ObtenerFavoritosSP(userId);
 
                         // Obtener los artículos correspondientes a los IDs
                         ListaFavoritos = negocio.ObtenerArticulosPorIds(idsArticulosFavoritos);

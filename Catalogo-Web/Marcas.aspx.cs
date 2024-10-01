@@ -119,7 +119,7 @@ namespace Catalogo_Web
 
                     if (!existe)
                     {
-                        bool resultado = negocio.Agregar(marca);
+                        bool resultado = negocio.AgregarMarcaSP(marca);
 
                         if (resultado)
                         {
@@ -225,6 +225,43 @@ namespace Catalogo_Web
 
         }
 
+        //protected void dgvMarcass_RowUpdating(object sender, GridViewUpdateEventArgs e)
+        //{
+        //    try
+        //    {
+        //        MarcaNegocio negocio = new MarcaNegocio();
+        //        Marca marca = new Marca();
+
+        //        int id = Convert.ToInt32(dgvMarcass.DataKeys[e.RowIndex].Value);
+        //        string descripcionNueva = (dgvMarcass.Rows[e.RowIndex].FindControl("txtDescripcion") as TextBox).Text;
+
+        //        marca.Id = id;
+        //        marca.Descripcion = descripcionNueva;
+
+        //        bool resultado = negocio.ExisteDescripcion(marca.Descripcion);
+
+        //        if (resultado)
+        //        {
+        //            string script = "Swal.fire({ icon: 'success', title: 'Éxito', text: 'Categoría editada con éxito.' });";
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "showSuccess", script, true);
+        //            Cargar();
+        //        }
+        //        else
+        //        {
+        //            string script = "Swal.fire({ icon: 'error', title: 'Error', text: 'Hubo un problema al guardar la categoría.' });";
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "showError", script, true);
+        //        }
+        //        // }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Session.Add("error", ex);
+        //        Response.Redirect("Error.aspx", false);
+        //    }
+
+        //}
+
         protected void dgvMarcass_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
             try
@@ -238,7 +275,7 @@ namespace Catalogo_Web
                 marca.Id = id;
                 marca.Descripcion = descripcionNueva;
 
-                bool resultado = negocio.modificar(marca);
+                bool resultado = negocio.ModificarMarcaSP(marca);
 
                 if (resultado)
                 {
@@ -269,7 +306,7 @@ namespace Catalogo_Web
             {
                 MarcaNegocio negocio = new MarcaNegocio();
                 int id = Convert.ToInt32(dgvMarcass.DataKeys[e.RowIndex].Value);
-                bool bandera = negocio.eliminar(id);
+                bool bandera = negocio.EliminarMarcaSP(id);
                 CargaDatos(negocio);
 
                 if (bandera)

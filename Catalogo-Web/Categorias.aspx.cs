@@ -156,7 +156,7 @@ namespace Catalogo_Web
                 else
                 {
                     CategoriaNegocio negocio = new CategoriaNegocio();
-                    bool resultado = negocio.Agregar(descripcion);
+                    bool resultado = negocio.AgregarCategoriaSP(descripcion);
 
                     if (resultado)
                     {
@@ -265,7 +265,7 @@ namespace Catalogo_Web
                 categoria.Id = id;
                 categoria.Descripcion = descripcionNueva;
 
-                bool resultado = negocio.modificar(categoria);
+                bool resultado = negocio.ModificarCategoriaSP(categoria);
 
                 if (resultado)
                 {
@@ -293,7 +293,7 @@ namespace Catalogo_Web
             {
                 CategoriaNegocio negocio = new CategoriaNegocio();
                 int id = Convert.ToInt32(dgvCategoriass.DataKeys[e.RowIndex].Value);
-                bool bandera = negocio.eliminar(id);
+                bool bandera = negocio.EliminarCategoriaSP(id);
                 CargaDatos(negocio);
 
                 if (bandera)

@@ -25,12 +25,12 @@ namespace Catalogo_Web
 
                     if (Session["Usuario"] != null)
                     {
-                        seleccionado = negocio.ListararticuloId(id);
+                        seleccionado = negocio.ListararticuloIdSP(id);
                         Session["articuloSeleccionado"] = seleccionado;
 
                         int userId = Convert.ToInt32(((Usuario)Session["Usuario"]).Id);
 
-                        List<int> favoritos = negocio.ObtenerFavoritos(userId);
+                        List<int> favoritos = negocio.ObtenerFavoritosSP(userId);
                         Session["Favoritos"] = favoritos;
 
                         bool esFavorito = favoritos.Contains(seleccionado.Id);
@@ -40,7 +40,7 @@ namespace Catalogo_Web
                     {
                         btnAgregarFavoritos.Text = "♡";
                     }
-                        seleccionado = negocio.ListararticuloId(id);
+                        seleccionado = negocio.ListararticuloIdSP(id);
                         Session["articuloSeleccionado"] = seleccionado;
                         
                         if (!string.IsNullOrEmpty(seleccionado.ImagenUrl)) 
@@ -94,7 +94,7 @@ namespace Catalogo_Web
                     bool operacionExitosa;
                     if (esFavorito)
                     {
-                        operacionExitosa = negocio.EliminarFavorito(userId, idArticulo);
+                        operacionExitosa = negocio.EliminarFavoritoSP(userId, idArticulo);
                         if (operacionExitosa)
                         {
                             favoritos.Remove(idArticulo);
