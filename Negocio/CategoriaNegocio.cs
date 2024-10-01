@@ -74,36 +74,36 @@ namespace Negocio
             }
         }
 
-        public List<Categoria> listarDisponibles()
-        {
-            List<Categoria> lista = new List<Categoria>();
-            AccesoDatos datos = new AccesoDatos();
+        //public List<Categoria> listarDisponibles()
+        //{
+        //    List<Categoria> lista = new List<Categoria>();
+        //    AccesoDatos datos = new AccesoDatos();
 
-            try
-            {
-                datos.setearConsulta("Select Id, Descripcion From CATEGORIAS order by Descripcion ASC");
-                datos.ejecutarLectura();
+        //    try
+        //    {
+        //        datos.setearConsulta("Select Id, Descripcion From CATEGORIAS order by Descripcion ASC");
+        //        datos.ejecutarLectura();
 
-                while (datos.Lector.Read())
-                {
-                    Categoria aux = new Categoria();
-                    aux.Id = (int)datos.Lector["Id"];
-                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+        //        while (datos.Lector.Read())
+        //        {
+        //            Categoria aux = new Categoria();
+        //            aux.Id = (int)datos.Lector["Id"];
+        //            aux.Descripcion = (string)datos.Lector["Descripcion"];
 
-                    lista.Add(aux);
-                }
+        //            lista.Add(aux);
+        //        }
 
-                return lista;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.cerrarConexion();
-            }
-        }
+        //        return lista;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        datos.cerrarConexion();
+        //    }
+        //}
 
         //public bool Agregar(string descripcion)
         //{
